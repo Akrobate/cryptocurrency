@@ -7,14 +7,18 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "export": "node src/export_market.js",
+    "agent": "node src/run_agent.js"
   },
   "author": "Artiom FEDOROV <fedorov.artiom@yahoo.com>",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
+    "json2csv": "^3.7.3",
     "mongodb": "^2.2.26",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "sleep": "^5.1.1"
   }
 }

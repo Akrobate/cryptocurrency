@@ -21,8 +21,11 @@ function CryptoCompare() {
     }
 
 
-    this.getPriceHistorical = function(callback) {
-        request({ url: cryptocompare_min_url + 'pricehistorical', qs: { fsym: 'ETH', tsyms: 'BTC,USD,EUR' } }, function (error, response, body) {
+    this.getPriceHistorical = function(params, callback) {
+        request({ url: cryptocompare_min_url + 'pricehistorical',
+                qs:
+                    { fsym: params.fsym, tsyms: params.tsyms, ts: params.timestamp } 
+                }, function (error, response, body) {
             console.log('statusCode:', response && response.statusCode);
             console.log('body:', body);
             return callback(JSON.parse(body));
