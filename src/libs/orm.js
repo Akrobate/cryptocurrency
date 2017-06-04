@@ -1,5 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
-var confserver = require('conf/confserver.js').get();
+var confserver = require('../conf/confserver').get();
 var assert = require('assert');
 var url = confserver.mongodb.url;
 
@@ -15,11 +15,11 @@ module.exports = {
 	 *
 	 */
 
-	find: function(collection, find, callback) {
+	find: function(collection, find, options, callback) {
 		var data = [];
 		MongoClient.connect(url, function(err, db) {
 			assert.equal(null, err);
-			var cursor = db.collection(collection).find(find);
+			var cursor = db.collection(collection).find(find, options);
 			cursor.each(function(err, doc) {
 				assert.equal(err, null);
 				if (doc != null) {
