@@ -2,35 +2,40 @@
 
 var request = require('request');
 
-var cryptocompare_min_url = 'https://min-api.cryptocompare.com/data/';
-var cryptocompare_url = 'https://www.cryptocompare.com/api/data/';
+class CryptoCompare {
 
-function CryptoCompare() {
+    cryptocompare_min_url = 'https://min-api.cryptocompare.com/data/';
+    cryptocompare_url = 'https://www.cryptocompare.com/api/data/';
 
-    this.getCoinList = function(callback) {
-        request({ url: cryptocompare_url + 'coinlist' }, function (error, response, body) {
+    getCoinList(callback) {
+        request({ url: this.cryptocompare_url  + 'coinlist' }, function (error, response, body) {
             return callback(JSON.parse(body));
         });
     }
 
-    // Example of working params: qs: { fsym: 'ETH', tsyms: 'BTC,USD,EUR' }
-    this.getPrice = function(fsym, tsyms, callback) {
-        request( { url: cryptocompare_min_url + 'price', qs: { fsym: fsym, tsyms: tsyms } }, function (error, response, body) {
+    /**
+     * 
+     * @param {String} fsym 
+     * @param {String} tsyms 
+     * @param {Function} callback
+     * 
+     * example params qs: { fsym: 'ETH', tsyms: 'BTC,USD,EUR' }
+     */
+    getPrice(fsym, tsyms, callback) {
+        request( { url: this.cryptocompare_min_url + 'price', qs: { fsym: fsym, tsyms: tsyms } }, function (error, response, body) {
             return callback(JSON.parse(body));
         });
     }
 
 
-    this.getPriceHistorical = function(params, callback) {
-        request({ url: cryptocompare_min_url + 'pricehistorical',
+    getPriceHistorical(params, callback) {
+        request({ url: this.cryptocompare_min_url + 'pricehistorical',
                 qs:
                     { fsym: params.fsym, tsyms: params.tsyms, ts: params.timestamp } 
                 }, function (error, response, body) {
             return callback(JSON.parse(body));
         });
     }
-
-
 }
 
 module.exports = CryptoCompare;
