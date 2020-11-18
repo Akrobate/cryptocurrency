@@ -2,27 +2,25 @@
 
 var request = require('request');
 
-var minergate_url = 'https://api.minergate.com/1.0/';
+class MinerGate {
 
-function MinerGate() {
+    minergate_url = 'https://api.minergate.com/1.0/';
+    token = null;
 
-    this.token = null;
-
-    this.getProfitRating = function(callback) {
-        request({ url: minergate_url + 'pool/profit-rating' }, function (error, response, body) {
+    getProfitRating(callback) {
+        request({ url: this.minergate_url + 'pool/profit-rating' }, (error, response, body) => {
             return callback(JSON.parse(body));
         });
     };
 
-    this.login = function(login, password, callback) {
-        let self = this;
+    login(login, password, callback) {
         let params = {
             login: login,
             password: password
         };
 
         let options = {
-            url: minergate_url + 'pool/profit-rating',
+            url: this.minergate_url + 'pool/profit-rating',
             method: "POST",
             json: true,
             body: params
