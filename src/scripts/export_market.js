@@ -8,7 +8,6 @@ const orm = require('./libs/orm');
 
 const Agent = require('./business_modules/Agent');
 const Market = require('./business_modules/Market');
-const sleep = require('sleep');
 const json2csv = require('json2csv');
 const fs = require('fs');
 

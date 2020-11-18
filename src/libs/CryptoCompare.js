@@ -26,8 +26,6 @@ function CryptoCompare() {
                 qs:
                     { fsym: params.fsym, tsyms: params.tsyms, ts: params.timestamp } 
                 }, function (error, response, body) {
-            console.log('statusCode:', response && response.statusCode);
-            console.log('body:', body);
             return callback(JSON.parse(body));
         });
     }

@@ -8,7 +8,6 @@ var orm = require('./libs/orm');
 
 let Agent = require('./business_modules/Agent');
 let Market = require('./business_modules/Market');
-var sleep = require('sleep');
 
 let market = new Market();
 
