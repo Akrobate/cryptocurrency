@@ -1,16 +1,20 @@
 'use strict';
 
-var request = require('request');
+const request = require('request');
+const axios = require('axios');
 
 class CryptoCompare {
 
     cryptocompare_min_url = 'https://min-api.cryptocompare.com/data/';
     cryptocompare_url = 'https://www.cryptocompare.com/api/data/';
 
-    getCoinList(callback) {
-        request({ url: this.cryptocompare_url  + 'coinlist' }, function (error, response, body) {
-            return callback(JSON.parse(body));
-        });
+    /**
+     * @returns {Promise<Object>}
+     */
+    getCoinList() {
+        return axios
+            .get(`${this.cryptocompare_url}/coinlist`)
+            .then((response) => response.data);
     }
 
     /**

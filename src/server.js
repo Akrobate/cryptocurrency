@@ -27,9 +27,11 @@ app.get('/get', function(req, res) {
 app.get('/getcoinlist', function(req, res) {
     res.setHeader('Content-Type', 'application/json');
     let crypto_compare = new CryptoCompare();
-    crypto_compare.getCoinList((data) => {
-        res.status(200).json( data );
-    });
+    return crypto_compare
+        .getCoinList()
+        .then((data) => {
+            return res.status(200).json( data );
+        });
 });
 
 module.exports = app;

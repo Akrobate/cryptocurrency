@@ -3,6 +3,7 @@
 const { mock } = require('sinon');
 const CryptoCompare = require('../../src/libs/CryptoCompare');
 const request = require('request');
+const { expect } = require('chai')
 
 const mocks = {};
 let crypto_compare = null;
@@ -20,10 +21,22 @@ describe('CryptoCompare', () => {
     });
 
     it('Should be able to get coinlist', (done) => {
-        crypto_compare.getCoinList((data) => {
-            console.log(data)
-            done()
-        })
+        crypto_compare.getCoinList()
+            .then((data) => {
+                try {
+                    expect(data).to.haveOwnProperty('Response');
+                    expect(data).to.haveOwnProperty('Message');
+                    expect(data).to.haveOwnProperty('BaseImageUrl');
+                    expect(data).to.haveOwnProperty('BaseLinkUrl');
+                    expect(data).to.haveOwnProperty('DefaultWatchlist');
+                    expect(data).to.haveOwnProperty('SponosoredNews');
+                    expect(data).to.haveOwnProperty('Data');
+                    expect(data).to.haveOwnProperty('Type');
+                } catch (error) {
+                    return done(error);
+                }
+                done();
+            })
     })
 
 });
