@@ -13,7 +13,7 @@ class CryptoCompare {
      */
     getCoinList() {
         return axios
-            .get(`${this.cryptocompare_url}/coinlist`)
+            .get(`${this.cryptocompare_url}coinlist`)
             .then((response) => response.data);
     }
 
@@ -25,10 +25,16 @@ class CryptoCompare {
      * 
      * example params qs: { fsym: 'ETH', tsyms: 'BTC,USD,EUR' }
      */
-    getPrice(fsym, tsyms, callback) {
-        request( { url: this.cryptocompare_min_url + 'price', qs: { fsym: fsym, tsyms: tsyms } }, function (error, response, body) {
-            return callback(JSON.parse(body));
-        });
+    getPrice(fsym, tsyms) {
+        return axios
+            .get(`${this.cryptocompare_min_url}price`,
+                { 
+                    params: {
+                        fsym,
+                        tsyms,
+                    },
+                })
+            .then((response) => response.data);
     }
 
 

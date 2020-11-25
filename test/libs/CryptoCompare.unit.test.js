@@ -40,10 +40,10 @@ describe('CryptoCompare', () => {
     })
 
     
-    it.only('Should be able to getPrice', (done) => {
+    it('Should be able to getPrice', (done) => {
         crypto_compare.getPrice(
-            'ETH', 'BTC,USD,EUR',
-            ((data) => {
+            'ETH', 'BTC,USD,EUR')
+            .then((data) => {
                 try {
                     expect(data).to.haveOwnProperty('BTC');
                     expect(data).to.haveOwnProperty('USD');
@@ -53,6 +53,5 @@ describe('CryptoCompare', () => {
                 }
                 done();
             })
-        )
     })
 });

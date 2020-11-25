@@ -2,12 +2,11 @@ const CryptoCompare = require('./libs/CryptoCompare');
 
 let crypto_compare = new CryptoCompare();
 
-crypto_compare.getPrice(
-    'ETH', 'BTC,USD,EUR',
-    (data) => {
+crypto_compare
+    .getPrice('ETH', 'BTC,USD,EUR')
+    .then((data) => {
         console.log(data)
-    }
-)
+    })
 
 
 'use strict'
