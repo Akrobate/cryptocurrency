@@ -39,4 +39,20 @@ describe('CryptoCompare', () => {
             })
     })
 
+    
+    it.only('Should be able to getPrice', (done) => {
+        crypto_compare.getPrice(
+            'ETH', 'BTC,USD,EUR',
+            ((data) => {
+                try {
+                    expect(data).to.haveOwnProperty('BTC');
+                    expect(data).to.haveOwnProperty('USD');
+                    expect(data).to.haveOwnProperty('EUR');
+                } catch (error) {
+                    return done(error);
+                }
+                done();
+            })
+        )
+    })
 });
