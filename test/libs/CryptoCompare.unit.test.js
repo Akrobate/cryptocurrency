@@ -54,4 +54,18 @@ describe('CryptoCompare', () => {
                 done();
             })
     })
+
+    it('Should be able to get historical data', (done) => {  
+        const params = {
+            fsym: 'BTC',
+            tsyms: 'EUR,USD',
+            timestamp: Date.now() / 1000 | 0,
+        };
+        crypto_compare.getPriceHistorical(params, (response) => {
+            expect(response).to.haveOwnProperty('BTC');
+            expect(response.BTC).to.haveOwnProperty('EUR');
+            expect(response.BTC).to.haveOwnProperty('USD');
+            done();
+        })
+    });
 });
