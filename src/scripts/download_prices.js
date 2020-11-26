@@ -37,22 +37,20 @@ function mainLoopGetHistoricalPrices() {
             timestamp: timestamp - (24 * 3600)
         };
 
-        crypto_compare.getPriceHistorical(params, (resp) => {
-            console.log(resp);
-            let data = {
-                'USD': resp.BTC.USD,
-                'EUR': resp.BTC.EUR,
-                'sym': 'BTC',
-                'date': new Date(params.timestamp * 1000)
-            }
-            orm.insert(collection_name, data, (res) => {
-                console.log(res);
-
-                setTimeout(function () {
-                  mainLoopGetHistoricalPrices();
-              }, 10000)
-
+        crypto_compare
+            .getPriceHistorical(params)
+            .then((resp) => {
+                console.log(resp);
+                let data = {
+                    'USD': resp.BTC.USD,
+                    'EUR': resp.BTC.EUR,
+                    'sym': 'BTC',
+                    'date': new Date(params.timestamp * 1000)
+                }
+                orm.insert(collection_name, data, (res) => {
+                    console.log(res);
+                    setTimeout(() => mainLoopGetHistoricalPrices(), 10000)
+                });
             });
-        });
     });
 }

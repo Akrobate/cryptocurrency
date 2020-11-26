@@ -38,13 +38,17 @@ class CryptoCompare {
     }
 
 
-    getPriceHistorical(params, callback) {
-        request({ url: this.cryptocompare_min_url + 'pricehistorical',
-                qs:
-                    { fsym: params.fsym, tsyms: params.tsyms, ts: params.timestamp } 
-                }, function (error, response, body) {
-            return callback(JSON.parse(body));
-        });
+    getPriceHistorical({ fsym, tsyms, timestamp }, callback) {
+        return axios
+            .get(`${this.cryptocompare_min_url}pricehistorical`,
+                { 
+                    params: {
+                        fsym,
+                        tsyms,
+                        ts: timestamp,
+                    },
+                })
+            .then((response) => response.data);
     }
 }
 

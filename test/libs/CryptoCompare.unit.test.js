@@ -61,11 +61,12 @@ describe('CryptoCompare', () => {
             tsyms: 'EUR,USD',
             timestamp: Date.now() / 1000 | 0,
         };
-        crypto_compare.getPriceHistorical(params, (response) => {
-            expect(response).to.haveOwnProperty('BTC');
-            expect(response.BTC).to.haveOwnProperty('EUR');
-            expect(response.BTC).to.haveOwnProperty('USD');
-            done();
-        })
+        crypto_compare.getPriceHistorical(params)
+            .then((response) => {
+                expect(response).to.haveOwnProperty('BTC');
+                expect(response.BTC).to.haveOwnProperty('EUR');
+                expect(response.BTC).to.haveOwnProperty('USD');
+                done();
+            });
     });
 });
