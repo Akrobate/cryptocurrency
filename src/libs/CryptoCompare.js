@@ -1,6 +1,5 @@
 'use strict';
 
-const request = require('request');
 const axios = require('axios');
 
 class CryptoCompare {
@@ -37,8 +36,14 @@ class CryptoCompare {
             .then((response) => response.data);
     }
 
-
-    getPriceHistorical({ fsym, tsyms, timestamp }, callback) {
+    /**
+     * @param {Object} param 
+     * @param {String} param.fsym
+     * @param {String} param.tsyms 
+     * @param {Number} param.timestamp
+     * @returns {Promise<Object>} 
+     */
+    getPriceHistorical({ fsym, tsyms, timestamp }) {
         return axios
             .get(`${this.cryptocompare_min_url}pricehistorical`,
                 { 
