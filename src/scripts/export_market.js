@@ -1,12 +1,6 @@
 'use strict'
 
 // Récupération du client mongodb
-const bodyParser = require('body-parser');
-const CryptoCompare = require('./libs/CryptoCompare');
-const MinerGate = require('./libs/MinerGate');
-const orm = require('./libs/orm');
-
-const Agent = require('./business_modules/Agent');
 const Market = require('./business_modules/Market');
 const json2csv = require('json2csv');
 const fs = require('fs');
@@ -40,11 +34,9 @@ market.loadData((data) => {
                 return console.log(err);
             console.log('File written');
         });
-    } catch (err) {
-    // Errors are thrown for bad options, or if the data is empty and no fields are provided.
-    // Be sure to provide fields if it is possible that your data array will be empty.
-    console.error(err);
+    } catch (error) {
+        // Errors are thrown for bad options, or if the data is empty and no fields are provided.
+        // Be sure to provide fields if it is possible that your data array will be empty.
+        console.error(error);
     }
-
-
 });
