@@ -3,7 +3,7 @@
 const { mock } = require('sinon');
 const CryptoCompare = require('../../src/libs/CryptoCompare');
 const request = require('request');
-const { expect } = require('chai')
+const { expect } = require('chai');
 
 const mocks = {};
 let crypto_compare = null;
