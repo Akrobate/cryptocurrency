@@ -32,6 +32,17 @@ describe('Binance API', function() {
                 done();
             })
             .catch(done)
-    })
+    });
+
+    it('Should be able to get server time', (done) => {
+        binance
+            .getServerTime()
+            .then((response) => {
+                expect(response).to.have.property('1serverTime');
+                expect(response.serverTime).to.be.greaterThan(0);
+                done();
+            })
+            .catch(done);
+    });
 
 })
