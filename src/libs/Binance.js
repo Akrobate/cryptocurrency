@@ -10,9 +10,8 @@ class Binance {
      * @returns {Promise<Object>}
      */
     checkConnectivity() {
-        console.log('herreeeeee')
         return axios
-            .get(`${this.cryptocompare_url}api/v3/ping`)
+            .get(`${this.base_api_url}api/v3/ping`)
             .then((response) => response.data)
     }
 

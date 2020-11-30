@@ -4,9 +4,7 @@ const axios = require('axios');
 const Binance = require('../../src/libs/Binance');
 
 
-describe.only('Binance API', function() {
-    
-    this.timeout(20000);
+describe('Binance API', function() {
 
     const mocks = {};
     let binance = null;
@@ -30,7 +28,7 @@ describe.only('Binance API', function() {
         binance
             .checkConnectivity()
             .then((response) => {
-                expect(response).to.equal({});
+                expect(response).to.deep.equal({});
                 done();
             })
             .catch(done)
