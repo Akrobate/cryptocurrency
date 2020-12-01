@@ -30,6 +30,33 @@ class Binance {
             .get(`${this.base_api_url}api/v3/time`)
             .then((response) => response.data);
     }
+
+    /**
+     * @returns {Promise<Object>}
+     */
+    getExchangeInfo() {
+        return axios
+            .get(`${this.base_api_url}api/v3/exchangeInfo`)
+            .then((response) => response.data);
+    }
+    
+
+    /**
+     * @param symbol
+     * @param limit Default 100; max 5000. Valid limits:[5, 10, 20, 50, 100, 500, 1000, 5000]
+     * @returns {Promise<Object>}
+     */
+    getOrderBook(symbol, limit) {
+        return axios
+            .get(`${this.base_api_url}api/v3/depth`,
+                { 
+                    params: {
+                        symbol,
+                        limit,
+                    },
+                })
+            .then((response) => response.data);
+    }
     
 }
 

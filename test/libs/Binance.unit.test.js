@@ -38,8 +38,22 @@ describe('Binance API', function() {
         binance
             .getServerTime()
             .then((response) => {
-                expect(response).to.have.property('1serverTime');
+                expect(response).to.have.property('serverTime');
                 expect(response.serverTime).to.be.greaterThan(0);
+                done();
+            })
+            .catch(done);
+    });
+
+    it('Should be able to get exchange info', (done) => {
+        binance
+            .getExchangeInfo()
+            .then((response) => {
+                expect(response).to.have.property('serverTime');
+                expect(response).to.have.property('rateLimits');
+                expect(response).to.have.property('timezone');
+                expect(response).to.have.property('exchangeFilters');
+                expect(response).to.have.property('symbols');
                 done();
             })
             .catch(done);
