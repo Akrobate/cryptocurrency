@@ -1,9 +1,15 @@
+/* eslint-disable sort-keys */
+
 'use strict';
 
-const { mock } = require('sinon');
+const {
+    mock,
+} = require('sinon');
 const CryptoCompare = require('../../src/libs/CryptoCompare');
 const request = require('request');
-const { expect } = require('chai');
+const {
+    expect,
+} = require('chai');
 
 const mocks = {};
 let crypto_compare = null;
@@ -35,11 +41,11 @@ describe('CryptoCompare', () => {
                 } catch (error) {
                     return done(error);
                 }
-                done();
-            })
-    })
+                return done();
+            });
+    });
 
-    
+
     it('Should be able to getPrice', (done) => {
         crypto_compare.getPrice(
             'ETH', 'BTC,USD,EUR')
@@ -51,15 +57,15 @@ describe('CryptoCompare', () => {
                 } catch (error) {
                     return done(error);
                 }
-                done();
-            })
-    })
+                return done();
+            });
+    });
 
-    it('Should be able to get historical data', (done) => {  
+    it('Should be able to get historical data', (done) => {
         const params = {
             fsym: 'BTC',
             tsyms: 'EUR,USD',
-            timestamp: Date.now() / 1000 | 0,
+            timestamp: Date.now() / 1000,
         };
         crypto_compare.getPriceHistorical(params)
             .then((response) => {
