@@ -23,5 +23,8 @@
     "mongodb": "^3.6.3",
     "request": "^2.88.2",
     "sinon": "^9.2.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.20.0"
   }
 }
