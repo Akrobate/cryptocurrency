@@ -7,6 +7,8 @@ class CryptoCompare {
     cryptocompare_min_url = 'https://min-api.cryptocompare.com/data/';
     cryptocompare_url = 'https://www.cryptocompare.com/api/data/';
 
+    authorization_api_key = null;
+
     /**
      * @returns {Promise<Object>}
      */
@@ -27,12 +29,13 @@ class CryptoCompare {
     getPrice(fsym, tsyms) {
         return axios
             .get(`${this.cryptocompare_min_url}price`,
-                { 
+                {
                     params: {
                         fsym,
                         tsyms,
                     },
-                })
+                }
+            )
             .then((response) => response.data);
     }
 
@@ -54,6 +57,27 @@ class CryptoCompare {
                     },
                 })
             .then((response) => response.data);
+    }
+
+    /**
+     * @returns {Object|Null}
+     */
+    generateHeader() {
+        if (this.authorization_api_key) {
+            return {
+                headers: {
+                    Authorization: `Apikey ${this.authorization_api_key}`, 
+                },
+            };
+        }
+    }
+
+    /**
+     * @param {String} authorization_api_key
+     * @returns {Void}
+     */
+    getAuthorizationApiKey(authorization_api_key) {
+        this.authorization_api_key = authorization_api_key;
     }
 }
 
