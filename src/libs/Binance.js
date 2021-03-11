@@ -3,15 +3,18 @@
 const axios = require('axios');
 
 /**
- * @class Binance
- * 
  * Conncetor to interract with the Binance API
  * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#general-api-information
- * 
+ *
  */
 class Binance {
 
-    base_api_url = 'https://api.binance.com/';
+    /**
+     * @return {Binance}
+     */
+    constructor() {
+        this.base_api_url = 'https://api.binance.com/';
+    }
 
     /**
      * @returns {Promise<Object>}
@@ -37,19 +40,18 @@ class Binance {
     getExchangeInfo() {
         return axios
             .get(`${this.base_api_url}api/v3/exchangeInfo`)
-            .then((response) => response.data);
+            .then((response) => response.data)
     }
-    
 
     /**
-     * @param symbol
-     * @param limit Default 100; max 5000. Valid limits:[5, 10, 20, 50, 100, 500, 1000, 5000]
+     * @param {String} symbol
+     * @param {Arra<Number>} limit Default 100; max 5000. Valid limits:[5, 10, 20, 50, 100, 500, 1000, 5000]
      * @returns {Promise<Object>}
      */
     getOrderBook(symbol, limit) {
         return axios
             .get(`${this.base_api_url}api/v3/depth`,
-                { 
+                {
                     params: {
                         symbol,
                         limit,
@@ -57,7 +59,7 @@ class Binance {
                 })
             .then((response) => response.data);
     }
-    
+
 }
 
 module.exports = Binance;

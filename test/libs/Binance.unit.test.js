@@ -1,23 +1,28 @@
-const { expect } = require('chai');
-const { mock } = require('sinon');
+'use strict';
+
+const {
+    expect,
+} = require('chai');
+const {
+    mock,
+} = require('sinon');
 const axios = require('axios');
+
 const Binance = require('../../src/libs/Binance');
 
-
-describe('Binance API', function() {
-
+describe('Binance API', () => {
     const mocks = {};
     let binance = null;
 
     beforeEach((done) => {
-        // mocks.axios = mock(axios);
+        mocks.axios = mock(axios);
         binance = new Binance();
         done();
     });
- 
-    // afterEach(() => {
-    //     mocks.axios.restore();
-    // });
+
+    afterEach(() => {
+        mocks.axios.restore();
+    });
 
     it('Should be able to check connectivity', (done) => {
 
@@ -31,7 +36,7 @@ describe('Binance API', function() {
                 expect(response).to.deep.equal({});
                 done();
             })
-            .catch(done)
+            .catch(done);
     });
 
     it('Should be able to get server time', (done) => {
@@ -45,7 +50,7 @@ describe('Binance API', function() {
             .catch(done);
     });
 
-    it('Should be able to get exchange info', (done) => {
+    it.only('Should be able to get exchange info', (done) => {
         binance
             .getExchangeInfo()
             .then((response) => {
@@ -57,6 +62,6 @@ describe('Binance API', function() {
                 done();
             })
             .catch(done);
-    });
+    }).timeout(5000);
 
-})
+});
