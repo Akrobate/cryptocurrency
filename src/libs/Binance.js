@@ -6,6 +6,7 @@ const axios = require('axios');
  * Conncetor to interract with the Binance API
  * https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md#general-api-information
  *
+ * https://github.com/binance/binance-spot-api-docs/blob/master/rest-api.md#current-average-price
  */
 class Binance {
 
@@ -40,7 +41,7 @@ class Binance {
     getExchangeInfo() {
         return axios
             .get(`${this.base_api_url}api/v3/exchangeInfo`)
-            .then((response) => response.data)
+            .then((response) => response.data);
     }
 
     /**
@@ -53,8 +54,48 @@ class Binance {
             .get(`${this.base_api_url}api/v3/depth`,
                 {
                     params: {
-                        symbol,
                         limit,
+                        symbol,
+                    },
+                })
+            .then((response) => response.data);
+    }
+
+    /**
+     *
+     * @param {String} symbol
+     * @returns {Object}
+     * {
+     *   "mins": 5,
+     *   "price": "9.35751834"
+     *   }
+     */
+    getCurrentAveragePrice(symbol) {
+        return axios
+            .get(`${this.base_api_url}api/v3/avgPrice`,
+                {
+                    params: {
+                        symbol,
+                    },
+                })
+            .then((response) => response.data);
+    }
+
+    /**
+     *
+     * @param {String} symbol
+     * @returns {Object}
+     * {
+     *   "mins": 5,
+     *   "price": "9.35751834"
+     *   }
+     */
+    getLatestPrice(symbol) {
+        return axios
+            .get(`${this.base_api_url}api/v3/ticker/price`,
+                {
+                    params: {
+                        symbol,
                     },
                 })
             .then((response) => response.data);
