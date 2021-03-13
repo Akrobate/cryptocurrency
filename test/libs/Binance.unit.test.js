@@ -1,3 +1,5 @@
+/* eslint-disable sort-keys */
+
 'use strict';
 
 const {
@@ -10,7 +12,7 @@ const axios = require('axios');
 
 const Binance = require('../../src/libs/Binance');
 
-describe('Binance API', () => {
+describe.only('Binance API', () => {
     const mocks = {};
     let binance = null;
 
@@ -50,7 +52,60 @@ describe('Binance API', () => {
             .catch(done);
     });
 
-    it.only('Should be able to get exchange info', (done) => {
+    it('Should be able to get exchange info', (done) => {
+        mocks.axios.expects('get')
+            .withArgs('https://api.binance.com/api/v3/exchangeInfo')
+            .returns(Promise.resolve(
+                {
+                    data: {
+                        serverTime: 987987,
+                        rateLimits: null,
+                        timezone: null,
+                        exchangeFilters: [],
+                        symbols: [
+                            {
+                                symbol: 'ETHBTC',
+                                status: 'TRADING',
+                                baseAsset: 'ETH',
+                                baseAssetPrecision: 8,
+                                quoteAsset: 'BTC',
+                                quotePrecision: 8,
+                                quoteAssetPrecision: 8,
+                                baseCommissionPrecision: 8,
+                                quoteCommissionPrecision: 8,
+                                orderTypes: [],
+                                icebergAllowed: true,
+                                ocoAllowed: true,
+                                quoteOrderQtyMarketAllowed: true,
+                                isSpotTradingAllowed: true,
+                                isMarginTradingAllowed: true,
+                                filters: [],
+                                permissions: [],
+                            },
+                            {
+                                symbol: 'LTCBTC',
+                                status: 'TRADING',
+                                baseAsset: 'LTC',
+                                baseAssetPrecision: 8,
+                                quoteAsset: 'BTC',
+                                quotePrecision: 8,
+                                quoteAssetPrecision: 8,
+                                baseCommissionPrecision: 8,
+                                quoteCommissionPrecision: 8,
+                                orderTypes: [],
+                                icebergAllowed: true,
+                                ocoAllowed: true,
+                                quoteOrderQtyMarketAllowed: true,
+                                isSpotTradingAllowed: true,
+                                isMarginTradingAllowed: true,
+                                filters: [],
+                                permissions: [],
+                            },
+                        ],
+                    },
+                })
+            );
+
         binance
             .getExchangeInfo()
             .then((response) => {
@@ -62,6 +117,6 @@ describe('Binance API', () => {
                 done();
             })
             .catch(done);
-    }).timeout(5000);
+    });
 
 });
