@@ -101,6 +101,41 @@ class Binance {
             .then((response) => response.data);
     }
 
+    /**
+     *
+     * @param {String} symbol
+     * @returns {Object}
+     * {
+     *   "mins": 5,
+     *   "price": "9.35751834"
+     *   }
+     */
+    get24HoursTickerPriceChangeStatistics(symbol) {
+        return axios
+            .get(`${this.base_api_url}api/v3/ticker/24hr`,
+                {
+                    params: {
+                        symbol,
+                    },
+                })
+            .then((response) => response.data);
+    }
+
+    /**
+     *
+     * @param {String} symbol
+     * @returns {Object}
+     * {
+     *   "mins": 5,
+     *   "price": "9.35751834"
+     *   }
+     */
+    getAll24HoursTickerPriceChangeStatistics() {
+        return axios
+            .get(`${this.base_api_url}api/v3/ticker/24hr`)
+            .then((response) => response.data);
+    }
+
 }
 
 module.exports = Binance;
