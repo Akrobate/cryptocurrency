@@ -28,9 +28,13 @@ describe.only('Binance API', () => {
 
     it('Should be able to check connectivity', (done) => {
 
-        // mocks.axios.expects('get')
-        //     .once()
-        //     .returns(Promise.resolve({ data: {}}))
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve(
+                {
+                    data: {},
+                }
+            ));
 
         binance
             .checkConnectivity()
@@ -42,6 +46,15 @@ describe.only('Binance API', () => {
     });
 
     it('Should be able to get server time', (done) => {
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve(
+                {
+                    data: {
+                        serverTime: 1615727105297,
+                    },
+                }
+            ));
         binance
             .getServerTime()
             .then((response) => {
@@ -114,6 +127,29 @@ describe.only('Binance API', () => {
                 expect(response).to.have.property('timezone');
                 expect(response).to.have.property('exchangeFilters');
                 expect(response).to.have.property('symbols');
+                done();
+            })
+            .catch(done);
+    });
+
+    it('Should be able to get current average price', (done) => {
+
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve(
+                {
+                    data: {
+                        mins: 5,
+                        price: 0.89737216,
+                    },
+                }
+            ));
+
+        binance
+            .getCurrentAveragePrice('ADAEUR')
+            .then((response) => {
+                expect(response).to.have.property('mins', 5);
+                expect(response).to.have.property('price');
                 done();
             })
             .catch(done);
