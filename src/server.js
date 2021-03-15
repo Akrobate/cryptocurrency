@@ -1,37 +1,38 @@
-'use strict'
+'use strict';
 
 // Récupération du client mongodb
-var bodyParser = require('body-parser');
-var CryptoCompare = require('./libs/CryptoCompare');
-var MinerGate = require('./libs/MinerGate');
-var orm = require('./libs/orm');
+const bodyParser = require('body-parser');
+const CryptoCompare = require('./repositories/api/CryptoCompare');
 
 // Paramètres de connexion
-var url = 'mongodb://localhost/cryptocurrency';
+// const url = 'mongodb://localhost/cryptocurrency';
 
-var express = require('express');
-var app = express();
+const express = require('express');
+const app = express();
 
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json( { "foo": "bar" } );
+app.get('/', (request, result) => {
+    result.setHeader('Content-Type', 'application/json');
+    result.status(200).json({
+        foo: 'bar',
+    });
 });
 
-app.get('/get', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json( { "foo": "bar" } );
+app.get('/get', (request, result) => {
+    result.setHeader('Content-Type', 'application/json');
+    result.status(200).json({
+        foo: 'bar',
+    });
 });
 
-app.get('/getcoinlist', function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    let crypto_compare = new CryptoCompare();
+app.get('/getcoinlist', (request, result) => {
+    result.setHeader('Content-Type', 'application/json');
+    // @TODO: make a singleton with this
+    const crypto_compare = new CryptoCompare();
     return crypto_compare
         .getCoinList()
-        .then((data) => {
-            return res.status(200).json( data );
-        });
+        .then((data) => result.status(200).json(data));
 });
 
 module.exports = app;
