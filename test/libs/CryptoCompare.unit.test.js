@@ -5,7 +5,7 @@
 const {
     mock,
 } = require('sinon');
-const CryptoCompare = require('../../src/libs/CryptoCompare');
+const CryptoCompare = require('../../src/repositories/api/CryptoCompare');
 const request = require('request');
 const {
     expect,
