@@ -158,6 +158,14 @@ describe.only('Binance API', () => {
     it('Should be able to get24HoursTickerPriceChangeStatistics', (done) => {
         mocks.axios.expects('get')
             .once()
+            .withArgs(
+                'https://api.binance.com/api/v3/ticker/24hr',
+                {
+                    params: {
+                        symbol: 'ADAEUR',
+                    },
+                }
+            )
             .returns(Promise.resolve(
                 {
                     data: {
@@ -210,6 +218,71 @@ describe.only('Binance API', () => {
                 expect(response).to.have.property('firstId', 4730001);
                 expect(response).to.have.property('lastId', 4781024);
                 expect(response).to.have.property('count', 51024);
+                done();
+            })
+            .catch(done);
+    });
+
+    it('Should be able to getAll24HoursTickerPriceChangeStatistics', (done) => {
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve(
+                {
+                    data: [
+                        {
+                            symbol: 'ADAEUR',
+                            priceChange: '0.01343000',
+                            priceChangePercent: '1.570',
+                            weightedAvgPrice: '0.87036957',
+                            prevClosePrice: '0.85519000',
+                            lastPrice: '0.86871000',
+                            lastQty: '60.40000000',
+                            bidPrice: '0.86860000',
+                            bidQty: '592.50000000',
+                            askPrice: '0.86870000',
+                            askQty: '4708.00000000',
+                            openPrice: '0.85528000',
+                            highPrice: '0.89400000',
+                            lowPrice: '0.84250000',
+                            volume: '19796612.10000000',
+                            quoteVolume: '17230368.73701800',
+                            openTime: 1615810169191,
+                            closeTime: 1615896569191,
+                            firstId: 4730001,
+                            lastId: 4781024,
+                            count: 51024,
+                        },
+                    ],
+                }
+            ));
+
+        binance
+            .getAll24HoursTickerPriceChangeStatistics('ADAEUR')
+            .then((response) => {
+                expect(response).to.be.an('Array');
+                const [first] = response;
+
+                expect(first).to.have.property('symbol', 'ADAEUR');
+                expect(first).to.have.property('priceChange', '0.01343000');
+                expect(first).to.have.property('priceChangePercent', '1.570');
+                expect(first).to.have.property('weightedAvgPrice', '0.87036957');
+                expect(first).to.have.property('prevClosePrice', '0.85519000');
+                expect(first).to.have.property('lastPrice', '0.86871000');
+                expect(first).to.have.property('lastQty', '60.40000000');
+                expect(first).to.have.property('bidPrice', '0.86860000');
+                expect(first).to.have.property('bidQty', '592.50000000');
+                expect(first).to.have.property('askPrice', '0.86870000');
+                expect(first).to.have.property('askQty', '4708.00000000');
+                expect(first).to.have.property('openPrice', '0.85528000');
+                expect(first).to.have.property('highPrice', '0.89400000');
+                expect(first).to.have.property('lowPrice', '0.84250000');
+                expect(first).to.have.property('volume', '19796612.10000000');
+                expect(first).to.have.property('quoteVolume', '17230368.73701800');
+                expect(first).to.have.property('openTime', 1615810169191);
+                expect(first).to.have.property('closeTime', 1615896569191);
+                expect(first).to.have.property('firstId', 4730001);
+                expect(first).to.have.property('lastId', 4781024);
+                expect(first).to.have.property('count', 51024);
                 done();
             })
             .catch(done);
