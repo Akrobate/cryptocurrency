@@ -9,7 +9,8 @@
   "scripts": {
     "test": "mocha --recursive",
     "export": "node src/export_market.js",
-    "agent": "node src/run_agent.js"
+    "agent": "node src/run_agent.js",
+    "cover": "nyc npm test"
   },
   "author": "Artiom FEDOROV <fedorov.artiom@yahoo.com>",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "json2csv": "^5.0.5",
     "mocha": "^8.2.1",
     "mongodb": "^3.6.3",
+    "nyc": "^15.1.0",
     "request": "^2.88.2",
     "sinon": "^9.2.1"
   },
