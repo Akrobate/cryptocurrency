@@ -13,7 +13,6 @@ crypto_compare
 
 // Récupération du client mongodb
 var bodyParser = require('body-parser');
-var CryptoCompare = require('./libs/CryptoCompare');
 var MinerGate = require('./libs/MinerGate');
 var orm = require('./libs/orm');
 
