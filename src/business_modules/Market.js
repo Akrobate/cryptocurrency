@@ -1,11 +1,21 @@
 'use strict';
 
-const orm = require('../libs/orm');
+const MongoDbRepository = require('../repositories/MongoDbRepository');
 
 class Market {
 
+    /**
+     * @returns {Market}
+     */
+    static build() {
+        return new Market(
+            MongoDbRepository.getInstance()
+        );
+    }
+
     // eslint-disable-next-line require-jsdoc
-    constructor() {
+    constructor(mongo_db_repository) {
+        this.mongo_db_repository = mongo_db_repository
         this.start_date = null;
         this.end_date = null;
         this.data = [];
@@ -72,17 +82,20 @@ class Market {
             },
         };
 
-        const find = {
+        const query = {
             date: {
                 $gte: new Date(this.start_date),
                 $lte: new Date(this.end_date),
             },
         };
 
-        orm.find(collection_name, find, options, (data) => {
-            this.data = data;
-            callback(data);
-        });
+        this.mongo_db_repository
+            .findDocumentList(collection_name, query, options.limit, null, null, options.sort)
+            .then((data) => {
+                this.data = data;
+                return callback(data);
+
+            });
     }
 
 }
