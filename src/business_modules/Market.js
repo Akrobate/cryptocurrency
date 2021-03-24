@@ -15,7 +15,7 @@ class Market {
 
     // eslint-disable-next-line require-jsdoc
     constructor(mongo_db_repository) {
-        this.mongo_db_repository = mongo_db_repository
+        this.mongo_db_repository = mongo_db_repository;
         this.start_date = null;
         this.end_date = null;
         this.data = [];

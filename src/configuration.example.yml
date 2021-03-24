@@ -1,0 +1,10 @@
+server:
+  port: 3000
+
+storage:
+  mongodb:
+    username: root
+    password: example
+    host: ''
+    port: 27017
+    database_name: cryptocurrency
