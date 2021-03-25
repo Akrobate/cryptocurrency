@@ -12,7 +12,7 @@ const {
 } = require('./logger');
 
 
-const CONFIGURATION_SAMPLE_YAML_FILE = './configuration.sample.yml';
+const CONFIGURATION_SAMPLE_YAML_FILE = './configuration.default.yml';
 const CONFIGURATION_YAML_FILE = './configuration.yml';
 
 let configuration = {};
