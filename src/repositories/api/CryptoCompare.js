@@ -4,10 +4,24 @@ const axios = require('axios');
 
 class CryptoCompare {
 
-    cryptocompare_min_url = 'https://min-api.cryptocompare.com/data/';
-    cryptocompare_url = 'https://www.cryptocompare.com/api/data/';
+    /**
+     * @return {CryptoCompare}
+     */
+    static getInstance() {
+        if (CryptoCompare.instance === null) {
+            CryptoCompare.instance = new CryptoCompare();
+        }
+        return CryptoCompare.instance;
+    }
 
-    authorization_api_key = null;
+    /**
+     * @returns {CryptoCompare}
+     */
+    constructor() {
+        this.cryptocompare_min_url = 'https://min-api.cryptocompare.com/data/';
+        this.cryptocompare_url = 'https://www.cryptocompare.com/api/data/';
+        this.authorization_api_key = null;
+    }
 
     /**
      * @returns {Promise<Object>}
@@ -19,12 +33,11 @@ class CryptoCompare {
     }
 
     /**
-     * 
-     * @param {String} fsym 
-     * @param {String} tsyms 
-     * @param {Function} callback
-     * 
      * example params qs: { fsym: 'ETH', tsyms: 'BTC,USD,EUR' }
+     * @param {String} fsym
+     * @param {String} tsyms
+     * @param {Function} callback
+     * @returns {Object}
      */
     getPrice(fsym, tsyms) {
         return axios
@@ -40,16 +53,20 @@ class CryptoCompare {
     }
 
     /**
-     * @param {Object} param 
+     * @param {Object} param
      * @param {String} param.fsym
-     * @param {String} param.tsyms 
+     * @param {String} param.tsyms
      * @param {Number} param.timestamp
-     * @returns {Promise<Object>} 
+     * @returns {Promise<Object>}
      */
-    getPriceHistorical({ fsym, tsyms, timestamp }) {
+    getPriceHistorical({
+        fsym,
+        tsyms,
+        timestamp,
+    }) {
         return axios
             .get(`${this.cryptocompare_min_url}pricehistorical`,
-                { 
+                {
                     params: {
                         fsym,
                         tsyms,
@@ -60,16 +77,17 @@ class CryptoCompare {
     }
 
     /**
-     * @returns {Object|Null}
+     * @returns {Object}
      */
     generateHeader() {
         if (this.authorization_api_key) {
             return {
                 headers: {
-                    Authorization: `Apikey ${this.authorization_api_key}`, 
+                    Authorization: `Apikey ${this.authorization_api_key}`,
                 },
             };
         }
+        return {};
     }
 
     /**
@@ -81,4 +99,8 @@ class CryptoCompare {
     }
 }
 
-module.exports = CryptoCompare;
+CryptoCompare.instance = null;
+
+module.exports = {
+    CryptoCompare,
+};
