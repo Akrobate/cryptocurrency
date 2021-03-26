@@ -14,7 +14,6 @@ crypto_compare
 // Récupération du client mongodb
 var bodyParser = require('body-parser');
 var MinerGate = require('./libs/MinerGate');
-var orm = require('./libs/orm');
 
 let Agent = require('./business_modules/Agent');
 let Market = require('./business_modules/Market');
