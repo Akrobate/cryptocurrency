@@ -1,12 +1,21 @@
 'use strict';
 
-var request = require('request');
+const request = require('request');
 
 class MinerGate {
 
-    minergate_url = 'https://api.minergate.com/1.0/';
-    token = null;
+    /**
+     * @returns {MinerGate}
+     */
+    constructor() {
+        this.token = null;
+        this.minergate_url = 'https://api.minergate.com/1.0/';
+    }
 
+    /**
+     *
+     * @param {*} callback 
+     */
     getProfitRating(callback) {
         request({ url: this.minergate_url + 'pool/profit-rating' }, (error, response, body) => {
             return callback(JSON.parse(body));
@@ -36,4 +45,6 @@ class MinerGate {
 
 }
 
-module.exports = MinerGate;
+module.exports = {
+    MinerGate
+};

@@ -13,6 +13,16 @@ class Binance {
     /**
      * @return {Binance}
      */
+    static getInstance() {
+        if (Binance.instance === null) {
+            Binance.instance = new Binance();
+        }
+        return Binance.instance;
+    }
+
+    /**
+     * @return {Binance}
+     */
     constructor() {
         this.base_api_url = 'https://api.binance.com/';
     }
@@ -138,4 +148,6 @@ class Binance {
 
 }
 
-module.exports = Binance;
+module.exports = {
+    Binance,
+};
