@@ -13,38 +13,52 @@ class MinerGate {
     }
 
     /**
-     *
-     * @param {*} callback 
+     * @returns {Promise}
      */
-    getProfitRating(callback) {
-        request({ url: this.minergate_url + 'pool/profit-rating' }, (error, response, body) => {
-            return callback(JSON.parse(body));
-        });
-    };
+    getProfitRating() {
+        return new Promise((resolve, reject) => request(
+            {
+                url: `${this.minergate_url}pool/profit-rating`,
+            },
+            (error, response, body) => {
+                if (error) {
+                    return reject(error);
+                }
+                return resolve(JSON.parse(body));
+            })
+        );
+    }
 
-    login(login, password, callback) {
-        let params = {
-            login: login,
-            password: password
-        };
-
-        let options = {
-            url: this.minergate_url + 'pool/profit-rating',
-            method: "POST",
-            json: true,
-            body: params
-        };
-
-        request(options, (error, response, body) => {
-            let json_body = JSON.parse(body);
-            this.token = json_body.token;
-            return callback(json_body);
-        });
-
-    };
+    /**
+     *
+     * @param {*} login
+     * @param {*} password
+     * @returns {Promise}
+     */
+    login(login, password) {
+        return new Promise((resolve, reject) => request(
+            {
+                url: `${this.minergate_url}pool/profit-rating`,
+                method: 'POST',
+                json: true,
+                body: {
+                    login,
+                    password,
+                },
+            },
+            (error, resoponse, body) => {
+                if (error) {
+                    reject(error);
+                }
+                const json_body = JSON.parse(body);
+                this.token = json_body.token;
+                return resolve(json_body);
+            })
+        );
+    }
 
 }
 
 module.exports = {
-    MinerGate
+    MinerGate,
 };
