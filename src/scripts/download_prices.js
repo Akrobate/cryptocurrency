@@ -1,6 +1,5 @@
 'use strict';
 
-// Récupération du client mongodb
 const {
     CryptoCompare,
 } = require('./repositories/api');

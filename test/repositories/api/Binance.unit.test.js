@@ -10,9 +10,11 @@ const {
 } = require('sinon');
 const axios = require('axios');
 
-const Binance = require('../../../src/repositories/api/Binance');
+const {
+    Binance,
+} = require('../../../src/repositories/api');
 
-describe.only('Binance API', () => {
+describe('Binance API', () => {
     const mocks = {};
     let binance = null;
 
