@@ -28,7 +28,7 @@ class CryptoCompare {
      */
     getCoinList() {
         return axios
-            .get(`${this.cryptocompare_url}coinlist`)
+            .get(`${this.cryptocompare_min_url}all/coinlist`)
             .then((response) => response.data);
     }
 
