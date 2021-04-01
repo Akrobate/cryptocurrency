@@ -83,7 +83,6 @@ describe('CryptoCompare', () => {
 
         crypto_compare.getCoinList()
             .then((data) => {
-                console.log(data);
                 try {
                     expect(data).to.haveOwnProperty('Response');
                     expect(data).to.haveOwnProperty('Message');
@@ -98,11 +97,29 @@ describe('CryptoCompare', () => {
             });
     });
 
-    it.skip('Should be able to getPrice', (done) => {
+    it('Should be able to getPrice', (done) => {
+        mocks.axios.expects('get')
+            .once()
+            .withArgs(
+                'https://min-api.cryptocompare.com/data/price',
+                {
+                    params: {
+                        fsym: 'ETH',
+                        tsyms: 'BTC,USD,EUR',
+                    },
+                }
+            )
+            .returns(Promise.resolve({
+                data: {
+                    BTC: 0.03275,
+                    USD: 1915.15,
+                    EUR: 1632.63,
+                },
+            }));
+
         crypto_compare.getPrice(
             'ETH', 'BTC,USD,EUR')
             .then((data) => {
-                console.log(data);
                 try {
                     expect(data).to.haveOwnProperty('BTC');
                     expect(data).to.haveOwnProperty('USD');
@@ -116,11 +133,35 @@ describe('CryptoCompare', () => {
         .timeout(10000);
 
     it('Should be able to get historical data', (done) => {
+
         const params = {
             fsym: 'BTC',
             tsyms: 'EUR,USD',
             timestamp: Math.ceil(Date.now() / 1000),
         };
+
+        mocks.axios.expects('get')
+            .once()
+            .withArgs(
+                'https://min-api.cryptocompare.com/data/pricehistorical',
+                {
+                    params: {
+                        fsym: params.fsym,
+                        tsyms: params.tsyms,
+                        ts: params.timestamp,
+                    },
+                }
+            )
+            .returns(Promise.resolve({
+                data: {
+                    BTC: {
+                        EUR: 49898.35,
+                        USD: 58663.42,
+                    },
+                },
+            }));
+
+
         crypto_compare.getPriceHistorical(params)
             .then((response) => {
                 expect(response).to.haveOwnProperty('BTC');
