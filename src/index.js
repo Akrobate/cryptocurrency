@@ -1,4 +1,9 @@
-'use strict'
+'use strict';
 
-var app = require('./server');
-app.listen(3015);
+const {
+    app,
+} = require('./server');
+
+app.listen(3015, () => {
+    console.log('Listening on 3015');
+});
