@@ -1,30 +1,28 @@
 'use strict';
 
-// Récupération du client mongodb
 const bodyParser = require('body-parser');
 const {
-    CryptoCompare,
-} = require('./repositories/api');
-
-const crypto_compare = CryptoCompare.getInstance();
+    base_url,
+    route_collection,
+} = require('./routes');
 
 const express = require('express');
 const app = express();
 
 app.use(bodyParser.json());
+app.use(base_url, route_collection);
 
-app.get('/', (request, result) => {
-    result.setHeader('Content-Type', 'application/json');
-    result.status(200).json({
-        foo: 'bar',
+// catch 404
+app.use((request, result) => result.status(404).send({}));
+
+// error management
+app.use((error, request, response, next) => {
+    response.status(500).send({
+        error: error.message,
     });
+    next();
 });
 
-app.get('/getcoinlist', (request, result) => {
-    result.setHeader('Content-Type', 'application/json');
-    return crypto_compare
-        .getCoinList()
-        .then((data) => result.status(200).json(data));
-});
-
-module.exports = app;
+module.exports = {
+    app,
+};
