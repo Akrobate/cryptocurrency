@@ -101,4 +101,6 @@ class Market {
 }
 
 
-module.exports = Market;
+module.exports = {
+    Market,
+};
