@@ -2,7 +2,12 @@
 
 const {
     CryptoCompare,
-} = require('./libs/CryptoCompare');
+} = require('./repositories/api');
+
+const {
+    Agent,
+    Market,
+} = require('./business_modules');
 
 const crypto_compare = new CryptoCompare();
 
@@ -11,14 +16,6 @@ crypto_compare
     .then((data) => {
         console.log(data);
     });
-
-const {
-    Agent,
-} = require('./business_modules/Agent');
-const {
-    Market,
-} = require('./business_modules/Market');
-
 
 const market = new Market();
 

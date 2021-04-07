@@ -1,6 +1,8 @@
 'use strict';
 
-const OperationsHistory = require('./OperationsHistory');
+const {
+    OperationsHistory,
+} = require('./OperationsHistory');
 
 
 class Agent {

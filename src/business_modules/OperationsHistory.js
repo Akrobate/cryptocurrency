@@ -34,4 +34,6 @@ class OperationsHistory {
 }
 
 
-module.exports = OperationsHistory;
+module.exports = {
+    OperationsHistory,
+};
