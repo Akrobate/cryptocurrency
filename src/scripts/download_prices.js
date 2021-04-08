@@ -8,11 +8,12 @@ const {
     MongoDbRepository,
 } = require('./repositories');
 
+const mongo_db_repository = MongoDbRepository.getInstance();
+const crypto_compare = CryptoCompare.getInstance();
+
 
 function mainLoopGetHistoricalPrices() {
 
-    const mongo_db_repository = MongoDbRepository.getInstance();
-    const crypto_compare = CryptoCompare.getInstance();
     const collection_name = 'historical_prices';
 
     let timestamp = Math.floor(Date.now() / 1000);
@@ -41,7 +42,7 @@ function mainLoopGetHistoricalPrices() {
                 timestamp: timestamp - (24 * 3600),
             };
 
-            crypto_compare
+            return crypto_compare
                 .getPriceHistorical(params)
                 .then((resp) => {
                     console.log(resp);
@@ -51,7 +52,7 @@ function mainLoopGetHistoricalPrices() {
                         'sym': 'BTC',
                         'date': new Date(params.timestamp * 1000),
                     };
-                    mongo_db_repository.insertDocument(collection_name, data_to_insert)
+                    return mongo_db_repository.insertDocument(collection_name, data_to_insert)
                         .then((res) => {
                             console.log(res);
                             setTimeout(() => mainLoopGetHistoricalPrices(), 10000);
