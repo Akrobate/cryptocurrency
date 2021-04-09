@@ -10,6 +10,7 @@ const {
 
 const mongo_db_repository = MongoDbRepository.getInstance();
 const crypto_compare = CryptoCompare.getInstance();
+const download_period = (24 * 3600);
 
 
 function mainLoopGetHistoricalPrices() {
@@ -39,7 +40,7 @@ function mainLoopGetHistoricalPrices() {
             const params = {
                 fsym: 'BTC',
                 tsyms: 'EUR,USD',
-                timestamp: timestamp - (24 * 3600),
+                timestamp: timestamp - download_period,
             };
 
             return crypto_compare
