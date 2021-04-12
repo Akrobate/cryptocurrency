@@ -4,14 +4,21 @@ const {
     MongoDbRepository,
 } = require('../repositories');
 
+const {
+    CryptoCompare,
+} = require('../repositories/api');
+
 class PriceHistoryDownloader {
 
     /**
      * @param {MongoDbRepository} mongo_db_repository
+     * @param {CryptoCompare} crypto_compare
      * @returns {PriceHistoryDownloader}
      */
-    constructor(mongo_db_repository) {
+    constructor(mongo_db_repository, crypto_compare) {
         this.mongo_db_repository = mongo_db_repository;
+        this.crypto_compare = crypto_compare;
+
         this.collection_name = null;
         this.timestamp_interval_between_prices = 3600 * 24;
     }
@@ -22,17 +29,27 @@ class PriceHistoryDownloader {
     getInstance() {
         if (PriceHistoryDownloader.instance === null) {
             PriceHistoryDownloader.instance = new PriceHistoryDownloader(
-                MongoDbRepository.getInstance()
+                MongoDbRepository.getInstance(),
+                CryptoCompare.getInstance()
             );
         }
+    }
+
+    /**
+     * buildInstance
+     * @returns {PriceHistoryDownloader}
+     */
+    buildInstance() {
+        return new PriceHistoryDownloader(
+            MongoDbRepository.getInstance(),
+            CryptoCompare.getInstance()
+        );
     }
 
     /**
      * @return {Promise}
      */
     mainLoopGetHistoricalPrices() {
-
-        const collection_name = 'historical_prices';
 
         let timestamp = Math.floor(Date.now() / 1000);
 
@@ -43,7 +60,15 @@ class PriceHistoryDownloader {
             },
         };
 
-        mongo_db_repository.findDocumentList(collection_name, {}, options.limit, 0, null, options.sort)
+        this.mongo_db_repository
+            .findDocumentList(
+                this.collection_name,
+                {},
+                options.limit,
+                0,
+                null,
+                options.sort
+            )
             .then((data) => {
                 console.log('Searching in collection');
                 console.log(data);
@@ -57,10 +82,10 @@ class PriceHistoryDownloader {
                 const params = {
                     fsym: 'BTC',
                     tsyms: 'EUR,USD',
-                    timestamp: timestamp - download_period,
+                    timestamp: timestamp - this.timestamp_interval_between_prices,
                 };
 
-                return crypto_compare
+                return this.crypto_compare
                     .getPriceHistorical(params)
                     .then((resp) => {
                         console.log(resp);
@@ -70,10 +95,11 @@ class PriceHistoryDownloader {
                             'sym': 'BTC',
                             'date': new Date(params.timestamp * 1000),
                         };
-                        return mongo_db_repository.insertDocument(collection_name, data_to_insert)
+                        return this.mongo_db_repository
+                            .insertDocument(this.collection_name, data_to_insert)
                             .then((res) => {
                                 console.log(res);
-                                setTimeout(() => mainLoopGetHistoricalPrices(), 10000);
+                                setTimeout(() => this.mainLoopGetHistoricalPrices(), 10000);
                             });
                     });
             });
@@ -102,8 +128,9 @@ class PriceHistoryDownloader {
             )
             .then((data) => {
                 if (data.length === 1) {
-                    timestamp = Math.floor(new Date(data[0].date).getTime() / 1000);
+                    return Math.floor(new Date(data[0].date).getTime() / 1000);
                 }
+                return null;
             });
 
     }
@@ -114,6 +141,14 @@ class PriceHistoryDownloader {
      */
     setTimestrampIntervalBetweenPrices(interval) {
         this.timestamp_interval_between_prices = interval;
+    }
+
+    /**
+     * @param {Number} collection_name
+     * @returns {void}
+     */
+    setCollectionName(collection_name) {
+        this.collection_name = collection_name;
     }
 
 }
