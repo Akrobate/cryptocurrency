@@ -52,31 +52,10 @@ class PriceHistoryDownloader {
     mainLoopGetHistoricalPrices() {
 
         let timestamp = Math.floor(Date.now() / 1000);
-
-        const options = {
-            'limit': 1,
-            'sort': {
-                date: 1,
-            },
-        };
-
-        this.mongo_db_repository
-            .findDocumentList(
-                this.collection_name,
-                {},
-                options.limit,
-                0,
-                null,
-                options.sort
-            )
-            .then((data) => {
-                console.log('Searching in collection');
-                console.log(data);
-
-                if (data.length === 1) {
-                    console.log(data[0].date);
-                    timestamp = Math.floor(new Date(data[0].date).getTime() / 1000);
-                    console.log(timestamp);
+        this.getLastItem()
+            .then((last_known_timestamp) => {
+                if (last_known_timestamp) {
+                    timestamp = last_known_timestamp;
                 }
 
                 const params = {
@@ -87,18 +66,17 @@ class PriceHistoryDownloader {
 
                 return this.crypto_compare
                     .getPriceHistorical(params)
-                    .then((resp) => {
-                        console.log(resp);
+                    .then((response) => {
+                        console.log(response);
                         const data_to_insert = {
-                            'USD': resp.BTC.USD,
-                            'EUR': resp.BTC.EUR,
+                            'USD': response.BTC.USD,
+                            'EUR': response.BTC.EUR,
                             'sym': 'BTC',
                             'date': new Date(params.timestamp * 1000),
                         };
                         return this.mongo_db_repository
                             .insertDocument(this.collection_name, data_to_insert)
-                            .then((res) => {
-                                console.log(res);
+                            .then(() => {
                                 setTimeout(() => this.mainLoopGetHistoricalPrices(), 10000);
                             });
                     });
