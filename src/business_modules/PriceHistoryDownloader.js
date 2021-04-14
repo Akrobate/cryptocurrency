@@ -19,6 +19,8 @@ class PriceHistoryDownloader {
         this.mongo_db_repository = mongo_db_repository;
         this.crypto_compare = crypto_compare;
 
+        this.symbol = null;
+        this.to_symbol = 'EUR,USD';
         this.collection_name = null;
         this.timestamp_interval_between_prices = 3600 * 24;
     }
@@ -59,8 +61,8 @@ class PriceHistoryDownloader {
                 }
 
                 const params = {
-                    fsym: 'BTC',
-                    tsyms: 'EUR,USD',
+                    fsym: this.symbol,
+                    tsyms: this.to_symbol,
                     timestamp: timestamp - this.timestamp_interval_between_prices,
                 };
 
@@ -71,7 +73,7 @@ class PriceHistoryDownloader {
                         const data_to_insert = {
                             'USD': response.BTC.USD,
                             'EUR': response.BTC.EUR,
-                            'sym': 'BTC',
+                            'symbol': this.symbol,
                             'date': new Date(params.timestamp * 1000),
                         };
                         return this.mongo_db_repository
@@ -122,11 +124,19 @@ class PriceHistoryDownloader {
     }
 
     /**
-     * @param {Number} collection_name
+     * @param {String} collection_name
      * @returns {void}
      */
     setCollectionName(collection_name) {
         this.collection_name = collection_name;
+    }
+
+    /**
+     * @param {String} symbol
+     * @returns {void}
+     */
+    setSymbol(symbol) {
+        this.symbol = symbol;
     }
 
 }
