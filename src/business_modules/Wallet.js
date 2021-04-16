@@ -33,6 +33,36 @@ class Wallet {
         this.history = history;
     }
 
+    /**
+     * @param {Number} amount
+     * @returns {void}
+     */
+    withdraw(amount) {
+        this.addHistory(-amount);
+        this.balance -= amount;
+    }
+
+    /**
+     * @param {Number} amount
+     * @returns {void}
+     */
+    deposit(amount) {
+        this.addHistory(amount);
+        this.balance += amount;
+    }
+
+
+    /**
+     * @param {Number} amount
+     * @returns {void}
+     */
+    addHistory(amount) {
+        this.history.push({
+            date: new Date(),
+            amount,
+        });
+    }
+
 }
 
 module.exports = {
