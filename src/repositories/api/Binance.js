@@ -92,12 +92,15 @@ class Binance {
     }
 
     /**
-     *
+     * Returns the current price
      * @param {String} symbol
      * @returns {Object}
+     *
+     * @example
+     * getLatestPrice('ADAEUR')
      * {
-     *   "mins": 5,
-     *   "price": "9.35751834"
+     *   symbol: 'ADAEUR',
+     *   price: '1.07795000',
      *   }
      */
     getLatestPrice(symbol) {
