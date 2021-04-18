@@ -290,4 +290,27 @@ describe('Binance API', () => {
             .catch(done);
     });
 
+    it.only('Should be able to get current price', (done) => {
+
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve(
+                {
+                    data: {
+                        symbol: 'ADAEUR',
+                        price: '1.07795000',
+                    },
+                }
+            ));
+
+        binance
+            .getLatestPrice('ADAEUR')
+            .then((response) => {
+                expect(response).to.have.property('symbol', 'ADAEUR');
+                expect(response).to.have.property('price');
+                done();
+            })
+            .catch(done);
+    });
+
 });
