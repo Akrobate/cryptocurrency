@@ -151,6 +151,8 @@ class Binance {
 
 }
 
+Binance.instance = null;
+
 module.exports = {
     Binance,
 };
