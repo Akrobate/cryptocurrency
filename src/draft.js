@@ -5,7 +5,7 @@ const {
 } = require('./repositories/api');
 
 const {
-    Agent,
+    TraderAgent,
     Market,
 } = require('./business_modules');
 
@@ -25,54 +25,50 @@ market.setEndDate('2016-12-31');
 
 market.loadData(() => {
 
-    const agent = new Agent(10.0);
+    const trader_agent = new TraderAgent(10.0);
 
     const current_price = market.getCurrentPrice();
-    agent.setCurrentPrice(current_price);
-    console.log(agent);
+    trader_agent.setCurrentPrice(current_price);
 
     const currency = 'BTC';
     const paidWithCurrency = 'EUR';
     const payment = 5.0;
 
-    agent.buy(currency, paidWithCurrency, payment);
-
-    console.log('AFTER BUY+++++++++++++++++++++++');
-    console.log(agent);
+    trader_agent.buy(currency, paidWithCurrency, payment);
 
     console.log('Operations logs');
-    console.log(agent.operations.data);
+    console.log(trader_agent.operations.data);
 
-    agent.buy(currency, paidWithCurrency, payment);
-
-    console.log('AFTER BUY+++++++++++++++++++++++');
-    console.log(agent);
-
-    console.log('Operations logs');
-    console.log(agent.operations.data);
-
-    agent.sell(currency, paidWithCurrency, 0.007871012686722265);
+    trader_agent.buy(currency, paidWithCurrency, payment);
 
     console.log('AFTER BUY+++++++++++++++++++++++');
-    console.log(agent);
+    console.log(trader_agent);
 
     console.log('Operations logs');
-    console.log(agent.operations.data);
+    console.log(trader_agent.operations.data);
 
-    agent.sell(currency, paidWithCurrency, 0.03);
+    trader_agent.sell(currency, paidWithCurrency, 0.007871012686722265);
 
     console.log('AFTER BUY+++++++++++++++++++++++');
-    console.log(agent);
+    console.log(trader_agent);
 
     console.log('Operations logs');
-    console.log(agent.operations.data);
+    console.log(trader_agent.operations.data);
+
+    trader_agent.sell(currency, paidWithCurrency, 0.03);
+
+    console.log('AFTER BUY+++++++++++++++++++++++');
+    console.log(trader_agent);
+
+    console.log('Operations logs');
+    console.log(trader_agent.operations.data);
 
     // current_price = market.getNextPrice();
-    // agent.setCurrentPrice(current_price);
-    // console.log(agent);
+    // trader_agent.setCurrentPrice(current_price);
+    // console.log(trader_agent);
     //
     // current_price = market.getNextPrice();
-    // agent.setCurrentPrice(current_price);
-    // console.log(agent);
+    // trader_agent.setCurrentPrice(current_price);
+    // console.log(trader_agent);
 
 });
