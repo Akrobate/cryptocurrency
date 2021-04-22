@@ -2,6 +2,9 @@ const {
     MongoDbRepository,
 } = require('./MongoDbRepository');
 const {
+    CsvFile,
+} = require('./CsvFile');
+const {
     Binance,
     CryptoCompare,
     MinerGate,
@@ -9,6 +12,7 @@ const {
 
 module.exports = {
     MongoDbRepository,
+    CsvFile,
     api: {
         Binance,
         CryptoCompare,
