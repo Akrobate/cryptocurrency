@@ -290,7 +290,7 @@ describe('Binance API', () => {
             .catch(done);
     });
 
-    it.only('Should be able to get current price', (done) => {
+    it('Should be able to get current price', (done) => {
 
         mocks.axios.expects('get')
             .once()
