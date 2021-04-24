@@ -3,42 +3,46 @@
 class Operation {
 
     // eslint-disable-next-line require-jsdoc
-    constructor() {
-        this.type = null;
-        this.currency = null;
-        this.paid_with = null;
-        this.currency_value = null;
-        this.payment_value = null;
-        this.price = null;
+    constructor({
+        buy_currency,
+        buy_value,
+        pay_currency,
+        pay_value,
+        date,
+    }) {
+        this.buy_currency = buy_currency;
+        this.buy_value = this.formatPriceValue(buy_value);
+        this.pay_currency = pay_currency;
+        this.pay_value = this.formatPriceValue(pay_value);
+        this.pair_name = this.getPairName();
+        this.pair_price = this.getPairPrice();
+        this.date = new Date(date);
     }
 
     /**
-     * @return {String}
+     * @returns {String}
      */
-    static get SELL_TYPE() {
-        return 'sell';
+    getPairName() {
+        return `${this.buy_currency}${this.pay_currency}`;
     }
 
     /**
-     * @return {String}
+     * @returns {Number}
      */
-    static get BUY_TYPE() {
-        return 'buy';
+    getPairPrice() {
+        return this.buy_value / this.pay_value;
     }
 
     /**
-     * @returns {void}
+     * @param {String|Number} value
+     * @returns {Number}
      */
-    setTypeSell() {
-        this.type = Operation.SELL_TYPE;
-    }
-
-
-    /**
-     * @returns {void}
-     */
-    setTypeBuy() {
-        this.type = Operation.BUY_TYPE;
+    formatPriceValue(value) {
+        let response = value;
+        if (typeof response === 'string') {
+            response = response.replace(',', '.');
+        }
+        return Number(response);
     }
 
 }
