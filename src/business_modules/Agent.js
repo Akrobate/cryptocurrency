@@ -1,5 +1,9 @@
 'use strict';
 
+const {
+    OperationsHistory,
+} = require('./OperationsHistory');
+
 
 class Agent {
 
@@ -8,6 +12,17 @@ class Agent {
     constructor(name) {
         this.name = name;
         console.log(`Agent declared: ${this.name}`);
+
+        this.operations_history = new OperationsHistory();
+        this.wallets = {};
+    }
+
+    /**
+     * @param {OperationsHistory} operations_history
+     * @returns {Object}
+     */
+    generateWalletsState(operations_history) {
+        
     }
 
 }
