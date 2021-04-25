@@ -14,13 +14,13 @@ class OperationsHistory {
     // eslint-disable-next-line require-jsdoc
     constructor() {
         this.csv_file = CsvFile.getInstance();
-        this.data = [];
+        this.operation_list = [];
         this.current_pointer = -1;
     }
 
     // eslint-disable-next-line require-jsdoc
     add(operation) {
-        this.data.push(operation);
+        this.operation_list.push(operation);
         this.current_pointer++;
     }
 
@@ -28,17 +28,21 @@ class OperationsHistory {
      * @return {Number}
      */
     getLast() {
-        return this.data[this.current_pointer];
+        return this.operation_list[this.current_pointer];
     }
 
     /**
      * @return {Boolean}
      */
     empty() {
-        if (this.current_pointer === -1) {
-            return true;
-        }
-        return false;
+        return this.operation_list.lenght === 0;
+    }
+
+    /**
+     * @returns {Array}
+     */
+    getOperationList() {
+        return this.operation_list;
     }
 
     /**
@@ -49,16 +53,8 @@ class OperationsHistory {
      */
     loadCsvOperations(file) {
         return this.csv_file
-            .readLinePerLineCsvFile(
-                file,
-                (data) => {
-                    console.log(data);
-                    // this.add(data);
-
-                    this.add(new Operation(data));
-
-
-                }
+            .readLinePerLineCsvFile(file,
+                (data) => this.add(new Operation(data))
             );
     }
 }
