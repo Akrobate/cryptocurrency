@@ -1,6 +1,10 @@
 'use strict';
 
 const {
+    expect,
+} = require('chai');
+
+const {
     OperationsHistory,
 } = require('../../src/business_modules');
 
@@ -10,11 +14,17 @@ describe.only('OperationsHistory', () => {
 
     it('Should be able to read csv operation file', () => {
         const operations_history = new OperationsHistory();
-        operations_history.loadCsvOperations(seed_csv_file)
+        return operations_history.loadCsvOperations(seed_csv_file)
             .then(() => {
-                console.log(operations_history.data);
-            })
-            .catch((error) => console.log(error));
+                const [
+                    operation_1,
+                    operation_2,
+                    operation_3,
+                ] = operations_history.getOperationList();
+                expect(operation_1.buy_currency).to.equal('CURB');
+                expect(operation_2.buy_currency).to.equal('CURA');
+                expect(operation_3.buy_currency).to.equal('CURD');
+            });
     });
 
 });
