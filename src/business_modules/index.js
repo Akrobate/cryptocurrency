@@ -1,6 +1,10 @@
 'use strict';
 
 const {
+    Agent,
+} = require('./Agent');
+
+const {
     TraderAgent,
 } = require('./TraderAgent');
 
@@ -21,6 +25,7 @@ const {
 } = require('./Wallet');
 
 module.exports = {
+    Agent,
     TraderAgent,
     Market,
     Operation,
