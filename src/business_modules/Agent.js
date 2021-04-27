@@ -21,8 +21,9 @@ class Agent {
      * @param {OperationsHistory} operations_history
      * @returns {Object}
      */
-    generateWalletsState(operations_history) {
-        const operation_list = operations_history.getOperationList();
+    generateWalletsState() {
+        const operation_list = this
+            .operations_history.getOperationList();
         operation_list.forEach((operation) => {
             // Todo init wallets here;
             console.log(operation);

@@ -15,5 +15,13 @@ describe.only('Agent unit test', () => {
         expect(agent).to.have.property('name', 'Smith');
     });
 
-    it.skip('Should be able to generate wallets from history file');
+    it.skip('Should be able to generate wallets from history file', (done) => {
+        const agent = new Agent('Smith');
+        agent
+            .generateWalletsState()
+            .then((data) => {
+                // expectation here
+                done();
+            });
+    });
 });
