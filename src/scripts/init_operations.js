@@ -1,7 +1,7 @@
 'use strict';
 
 const {
-    TraderAgent,
+    Agent,
     Operation,
     OperationsHistory,
     Wallet,
