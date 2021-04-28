@@ -5,10 +5,6 @@ const {
 } = require('./Agent');
 
 const {
-    TraderAgent,
-} = require('./TraderAgent');
-
-const {
     Market,
 } = require('./Market');
 
@@ -26,7 +22,6 @@ const {
 
 module.exports = {
     Agent,
-    TraderAgent,
     Market,
     Operation,
     OperationsHistory,
