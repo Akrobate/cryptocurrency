@@ -17,6 +17,16 @@ class Agent {
         this.wallets = {};
     }
 
+
+    /**
+     * @param {String} file
+     * @returns {Params}
+     */
+    loadOperationFile(file) {
+        return this.operations_history.loadCsvOperations(file);
+    }
+
+
     /**
      * @param {OperationsHistory} operations_history
      * @returns {Object}
