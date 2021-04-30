@@ -17,13 +17,14 @@ describe.only('Agent unit test', () => {
         expect(agent).to.have.property('name', 'Smith');
     });
 
-    it.only('Should be able to generate wallets from history file', (done) => {
+    it('Should be able to generate wallets from history file', async () => {
         const agent = new Agent('Smith');
-        agent.loadOperationFile(seed_csv_file)
-            .then(() => {
-                agent.generateWalletsState();
-                // expectation here
-                done();
-            });
+        await agent.loadOperationFile(seed_csv_file);
+        agent.generateWalletsState();
+        const wallets = agent.getWallets();
+        expect(wallets).to.have.property('ADA');
+        expect(wallets).to.have.property('EUR');
+        expect(wallets).to.have.property('DOT');
+
     });
 });
