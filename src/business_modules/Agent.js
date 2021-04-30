@@ -4,6 +4,9 @@ const {
     OperationsHistory,
 } = require('./OperationsHistory');
 
+const {
+    Wallet,
+} = require('./Wallet');
 
 class Agent {
 
@@ -34,10 +37,31 @@ class Agent {
     generateWalletsState() {
         const operation_list = this
             .operations_history.getOperationList();
+
         operation_list.forEach((operation) => {
-            // Todo init wallets here;
-            console.log(operation);
+            this.getWalletInstance(operation.getBuyCurrency()).deposit(operation.getBuyValue());
+            this.getWalletInstance(operation.getPayCurrency()).withdraw(operation.getPayValue());
         });
+    }
+
+
+    /**
+     * @param {String} wallet_currency
+     * @return {Wallet}
+     */
+    getWalletInstance(wallet_currency) {
+        if (!this.wallets[wallet_currency]) {
+            this.wallets[wallet_currency] = Wallet.buildWallet(wallet_currency);
+        }
+        return this.wallets[wallet_currency];
+    }
+
+
+    /**
+     * @returns {Object}
+     */
+    getWallets() {
+        return this.wallets;
     }
 
 }
