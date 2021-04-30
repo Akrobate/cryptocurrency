@@ -9,11 +9,20 @@ class Wallet {
         this.history = [];
     }
 
-    // eslint-disable-next-line require-jsdoc
-    static buildWallet(currency, balance, history) {
+
+    /**
+     * @static
+     * @param {String} currency
+     * @param {Number} balance
+     * @param {Array} history
+     * @returns {Wallet}
+     */
+    static buildWallet(currency, balance = 0, history = null) {
         const wallet = new Wallet(currency);
         wallet.setBalance(balance);
-        wallet.setHistory(history);
+        if (history) {
+            wallet.setHistory(history);
+        }
         return wallet;
     }
 
