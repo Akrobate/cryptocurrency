@@ -26,6 +26,35 @@ class Operation {
         return `${this.buy_currency}${this.pay_currency}`;
     }
 
+
+    /**
+     * @returns {String}
+     */
+    getBuyCurrency() {
+        return this.buy_currency;
+    }
+
+    /**
+     * @returns {String}
+     */
+    getPayCurrency() {
+        return this.pay_currency;
+    }
+
+    /**
+     * @returns {String}
+     */
+    getBuyValue() {
+        return this.buy_value;
+    }
+
+    /**
+     * @returns {String}
+     */
+    getPayValue() {
+        return this.pay_value;
+    }
+
     /**
      * @returns {Number}
      */
