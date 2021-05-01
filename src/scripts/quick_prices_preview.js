@@ -24,6 +24,6 @@ Promise.mapSeries(
     (cryptocurrency) => binance
         .getLatestPrice(`${cryptocurrency}${to_currency}`)
         .then((result) => {
-            console.log(`${cryptocurrency}\t ${result.price} ${to_currency.toLowerCase()}`);
+            console.log(`${cryptocurrency}\t ${result.price} ${to_currency}`);
         })
 );
