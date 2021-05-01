@@ -1,5 +1,6 @@
 'use strict';
 
+const Promise = require('bluebird');
 const {
     OperationsHistory,
 } = require('./OperationsHistory');
@@ -8,15 +9,28 @@ const {
     Wallet,
 } = require('./Wallet');
 
+const {
+    Binance,
+} = require('../repositories/api/Binance');
+
 class Agent {
+
+    /**
+     * @static
+     * @returns {Agent}
+     */
+    static buildAgent() {
+        return new Agent(
+            new OperationsHistory(),
+            Binance.getInstance()
+        );
+    }
 
 
     // eslint-disable-next-line require-jsdoc
-    constructor(name) {
-        this.name = name;
-        console.log(`Agent declared: ${this.name}`);
-
-        this.operations_history = new OperationsHistory();
+    constructor(operations_history, binance_repository) {
+        this.operations_history = operations_history;
+        this.binance_repository = binance_repository;
         this.wallets = {};
     }
 
@@ -62,6 +76,50 @@ class Agent {
      */
     getWallets() {
         return this.wallets;
+    }
+
+
+    /**
+     * @param {String} to_currency
+     * @return {Number}
+     */
+    async calculateAgentBalance(to_currency) {
+
+        const cryptocurrencies = Object.keys(this.wallets);
+        console.log(cryptocurrencies);
+
+        const to_currency_index = cryptocurrencies.indexOf(to_currency);
+        if (to_currency_index > -1) {
+            cryptocurrencies.splice(to_currency_index, 1);
+        }
+        console.log(cryptocurrencies);
+
+        const prices = {};
+
+        await Promise.mapSeries(
+            cryptocurrencies,
+            async (cryptocurrency) => {
+                const result = await this.binance_repository
+                    .getLatestPrice(`${cryptocurrency}${to_currency}`);
+                prices[cryptocurrency] = Number(result.price);
+            }
+        );
+
+        const balance = cryptocurrencies.reduce((accumulator, currency) => {
+            const curency_price = prices[currency] * this.wallets[currency].getBalance();
+            return accumulator + curency_price;
+        }, 0);
+
+        return balance;
+    }
+
+
+    /**
+     * @param {String} currency
+     * @return {Number}
+     */
+    getBalanceFromWallet(currency) {
+        return this.wallets[currency].getBalance();
     }
 
 }
