@@ -8,7 +8,7 @@ const {
     Agent,
 } = require('../../src/business_modules');
 
-describe.only('Agent unit test', () => {
+describe('Agent unit test', () => {
 
     const seed_csv_file = './test/data/real_operation_history_seed.csv';
 
@@ -23,8 +23,13 @@ describe.only('Agent unit test', () => {
         agent.generateWalletsState();
         const wallets = agent.getWallets();
         expect(wallets).to.have.property('ADA');
-        expect(wallets).to.have.property('EUR');
-        expect(wallets).to.have.property('DOT');
+        expect(wallets.ADA.getBalance()).to.equal(15);
 
+        expect(wallets).to.have.property('EUR');
+        expect(wallets.EUR.getBalance()).to.equal(-71);
+
+        expect(wallets).to.have.property('DOT');
+        expect(wallets.DOT.getBalance()).to.equal(2);
     });
+
 });
