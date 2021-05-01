@@ -35,6 +35,13 @@ class Wallet {
     }
 
     /**
+     * @returns {Number}
+     */
+    getBalance() {
+        return this.balance;
+    }
+
+    /**
      * @param {Array} history
      * @returns {void}
      */
