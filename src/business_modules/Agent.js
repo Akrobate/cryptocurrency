@@ -86,13 +86,13 @@ class Agent {
     async calculateAgentBalance(to_currency) {
 
         const cryptocurrencies = Object.keys(this.wallets);
-        console.log(cryptocurrencies);
+        // console.log(cryptocurrencies);
 
         const to_currency_index = cryptocurrencies.indexOf(to_currency);
         if (to_currency_index > -1) {
             cryptocurrencies.splice(to_currency_index, 1);
         }
-        console.log(cryptocurrencies);
+        // console.log(cryptocurrencies);
 
         const prices = {};
 
