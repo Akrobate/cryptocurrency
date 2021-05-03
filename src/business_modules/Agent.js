@@ -100,7 +100,7 @@ class Agent {
             cryptocurrencies,
             async (cryptocurrency) => {
                 const result = await this.binance_repository
-                    .getLatestPrice(`${cryptocurrency}${to_currency}`);
+                    .adaptSymbolAndGetLastestPrice(`${cryptocurrency}${to_currency}`);
                 prices[cryptocurrency] = Number(result.price);
             }
         );
