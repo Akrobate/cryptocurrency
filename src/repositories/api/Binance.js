@@ -149,6 +149,22 @@ class Binance {
             .then((response) => response.data);
     }
 
+
+    /**
+     * @param {String} symbol
+     * @return {Object}
+     */
+    async adaptSymbolAndGetLastestPrice(symbol) {
+        switch (symbol) {
+            case 'USDTEUR':
+                return {
+                    symbol: 'USDTEUR',
+                    price: 1 / Number((await this.getLatestPrice('EURUSDT')).price),
+                };
+            default:
+                return this.getLatestPrice(symbol);
+        }
+    }
 }
 
 Binance.instance = null;
