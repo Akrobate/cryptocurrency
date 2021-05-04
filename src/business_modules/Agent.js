@@ -32,6 +32,7 @@ class Agent {
         this.operations_history = operations_history;
         this.binance_repository = binance_repository;
         this.wallets = {};
+        this.wallets_euro_balance = {};
     }
 
 
@@ -86,33 +87,36 @@ class Agent {
     async calculateAgentBalance(to_currency) {
 
         const cryptocurrencies = Object.keys(this.wallets);
-        // console.log(cryptocurrencies);
 
         const to_currency_index = cryptocurrencies.indexOf(to_currency);
         if (to_currency_index > -1) {
             cryptocurrencies.splice(to_currency_index, 1);
         }
-        // console.log(cryptocurrencies);
-
-        const prices = {};
 
         await Promise.mapSeries(
             cryptocurrencies,
             async (cryptocurrency) => {
-                const result = await this.binance_repository
-                    .adaptSymbolAndGetLastestPrice(`${cryptocurrency}${to_currency}`);
-                prices[cryptocurrency] = Number(result.price);
+                await this.wallets[cryptocurrency].updateBalanceEuro();
             }
         );
 
         const balance = cryptocurrencies.reduce((accumulator, currency) => {
-            const curency_price = prices[currency] * this.wallets[currency].getBalance();
+            const curency_price = this.wallets[currency].getBalanceEuro();
             return accumulator + curency_price;
         }, 0);
 
         return balance;
     }
 
+
+    /**
+     * @returns {Array<Object>}
+     */
+    getWalletsWithAmount() {
+        return Object.keys(this.wallets)
+            .map((key) => this.wallets[key])
+            .filter((wallet) => wallet.getBalance() !== 0);
+    }
 
     /**
      * @param {String} currency
