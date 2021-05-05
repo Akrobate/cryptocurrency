@@ -8,7 +8,7 @@ const {
     OperationsHistory,
 } = require('../../src/business_modules');
 
-describe.only('OperationsHistory', () => {
+describe('OperationsHistory', () => {
 
     const seed_csv_file = './test/data/operation_history_seed.csv';
 
