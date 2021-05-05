@@ -93,12 +93,9 @@ class Agent {
             cryptocurrencies.splice(to_currency_index, 1);
         }
 
-        await Promise.mapSeries(
-            cryptocurrencies,
-            async (cryptocurrency) => {
-                await this.wallets[cryptocurrency].updateBalanceEuro();
-            }
-        );
+        for (const cryptocurrency of cryptocurrencies) {
+            await this.wallets[cryptocurrency].updateBalanceEuro();
+        }
 
         const balance = cryptocurrencies.reduce((accumulator, currency) => {
             const curency_price = this.wallets[currency].getBalanceEuro();
