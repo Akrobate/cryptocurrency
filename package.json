@@ -27,7 +27,8 @@
     "mongodb": "^3.6.3",
     "nyc": "^15.1.0",
     "request": "^2.88.2",
-    "sinon": "^9.2.1"
+    "sinon": "^9.2.1",
+    "ws": "^7.4.5"
   },
   "devDependencies": {
     "eslint": "^7.20.0"
