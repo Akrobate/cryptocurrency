@@ -1,6 +1,5 @@
 'use strict';
 
-const Promise = require('bluebird');
 const {
     Binance,
 } = require('../repositories/api/Binance');
