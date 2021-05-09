@@ -313,4 +313,22 @@ describe('Binance API', () => {
             .catch(done);
     });
 
+    it('Should be able to adaptSymbolAndGetLastestPrice', async () => {
+
+        const eurusdt_last_price = {
+            data: {
+                symbol: 'EURUSDT',
+                price: '1.19795000',
+            },
+        };
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve(eurusdt_last_price));
+
+        const response = await binance.adaptSymbolAndGetLastestPrice('USDTEUR');
+        expect(response.symbol).to.equal('USDTEUR');
+        expect(response.price).to.equal(1 / Number(eurusdt_last_price.data.price));
+
+    });
+
 });
