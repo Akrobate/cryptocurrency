@@ -58,8 +58,24 @@ class BinanceWebsocket {
                 id,
             }
         ));
-
     }
+
+
+    /**
+     * @param {Function} callback
+     * @returns {Void}
+     */
+    listenMessage(callback) {
+        this.websocket_handler.onmessage = (event) => {
+            // console.log('WebSocket message received:', event);
+            if (event.data) {
+                const data = JSON.parse(event.data);
+                return callback(data);
+            }
+            return null;
+        };
+    }
+
 }
 
 BinanceWebsocket.instance = null;
