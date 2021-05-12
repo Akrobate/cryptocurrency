@@ -27,6 +27,9 @@ function format4Decimals(num) {
         agent.getWalletsWithAmount().map(formatWalletDisplay);
         const revenue = eur_wallet + agent_balance;
         console.log('Revenue: ', format4Decimals(revenue));
+
+        // Work in progress
+        // agent.getOwnedCurrenciesAveragePrice().map(console.log);
     } catch (error) {
         console.log(error.response.data);
     }

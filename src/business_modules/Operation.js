@@ -59,7 +59,7 @@ class Operation {
      * @returns {Number}
      */
     getPairPrice() {
-        return this.buy_value / this.pay_value;
+        return this.pay_value / this.buy_value;
     }
 
     /**

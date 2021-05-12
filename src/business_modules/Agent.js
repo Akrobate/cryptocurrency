@@ -122,6 +122,20 @@ class Agent {
         return this.wallets[currency].getBalance();
     }
 
+
+    /**
+     * @returns {Array}
+     */
+    getOwnedCurrenciesAveragePrice() {
+        const wallets_with_amout = this.getWalletsWithAmount();
+
+        // console.log(wallets_with_amout);
+        // console.log(this.operations_history);
+
+
+        return [];
+    }
+
 }
 
 module.exports = {
