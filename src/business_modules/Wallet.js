@@ -12,6 +12,7 @@ class Wallet {
         this.balance = null;
         this.balance_euro = 0;
         this.price_euro = null;
+        this.price_usdt = null;
         this.history = [];
     }
 
@@ -71,9 +72,15 @@ class Wallet {
      * @returns {Number}
      */
     getBalanceEuro() {
-        return this.balance_euro;
+        return this.price_euro * this.getBalance();
     }
 
+    /**
+     * @returns {Number}
+     */
+    getBalanceUsdt() {
+        return this.price_usdt * this.getBalance();
+    }
 
     /**
      * @param {Array} history
@@ -118,14 +125,20 @@ class Wallet {
      * @async
      * @returns {void}
      */
-    async updateBalanceEuro() {
-        if (this.getBalance() !== 0 && this.currency !== 'EUR') {
-            const result = await this.binance_repository
+    async updatePrices() {
+        if (this.currency !== 'EUR') {
+            const result_euro = await this.binance_repository
                 .adaptSymbolAndGetLastestPrice(`${this.currency}EUR`);
-            this.price_euro = Number(result.price);
-            this.balance_euro = this.price_euro * this.getBalance();
+            this.price_euro = Number(result_euro.price);
+        }
+
+        if (this.currency !== 'USDT') {
+            const result_usdt = await this.binance_repository
+                .adaptSymbolAndGetLastestPrice(`${this.currency}USDT`);
+            this.price_usdt = Number(result_usdt.price);
         }
     }
+
 
 }
 
