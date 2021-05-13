@@ -12,6 +12,7 @@ const {
     Binance,
 } = require('../repositories/api/Binance');
 
+const open_orders = require('../../data/open_orders.json');
 class Agent {
 
     /**
@@ -93,7 +94,7 @@ class Agent {
         }
 
         for (const cryptocurrency of cryptocurrencies) {
-            await this.wallets[cryptocurrency].updateBalanceEuro();
+            await this.wallets[cryptocurrency].updatePrices();
         }
 
         const balance = cryptocurrencies.reduce((accumulator, currency) => {
@@ -122,6 +123,19 @@ class Agent {
         return this.wallets[currency].getBalance();
     }
 
+    /**
+     * @returns {void}
+     */
+    loadOpenOrders() {
+        this.order_list = open_orders;
+    }
+
+    /**
+     * @returns {Array}
+     */
+    getOpenOrders() {
+        return this.order_list;
+    }
 
     /**
      * @returns {Array}
@@ -131,8 +145,6 @@ class Agent {
 
         // console.log(wallets_with_amout);
         // console.log(this.operations_history);
-
-
         return [];
     }
 
