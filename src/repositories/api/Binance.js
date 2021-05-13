@@ -149,6 +149,26 @@ class Binance {
             .then((response) => response.data);
     }
 
+    /**
+     *
+     * @param {Object} params
+     * @param {String} params.symbol required
+     * @param {String} params.interval required
+     * @param {Number} params.startTime
+     * @param {Number} params.endTime
+     * @param {Number} params.limit Default 500; max 1000.
+     * @returns {Object}
+     */
+    getCandlestickData(params) {
+        return axios
+            .get(`${this.base_api_url}api/v3/klines`,
+                {
+                    params,
+                }
+            )
+            .then((response) => response.data);
+    }
+
 
     /**
      * @param {String} symbol
