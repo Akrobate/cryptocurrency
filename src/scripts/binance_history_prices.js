@@ -9,13 +9,25 @@ const {
 
 const binance = Binance.getInstance();
 
+/**
+ * @param {Array} data
+ * @param {String} indicator
+ * @param {Number} interval
+ * @returns {Array}
+ */
+function movingAverage(data, indicator, interval) {
+
+    
+}
+
+
 (async () => {
     const params = {
         symbol: 'XLMUSDT',
         interval: '15m',
-        startTime: moment()
-            .subtract(10000, 'days')
-            .format('x'),
+        // startTime: moment()
+        //     .subtract(10000, 'days')
+        //     .format('x'),
     };
     const result = await binance.getCandlestickData(params);
     const test = result.map((item) => {
