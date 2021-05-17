@@ -14,6 +14,7 @@ class BinancePriceDownloader {
      */
     constructor(binance_repository) {
         this.binance_repository = binance_repository;
+        this.bucket_callback_function = null;
     }
 
 
@@ -45,8 +46,8 @@ class BinancePriceDownloader {
      * @param {*} symbol
      * @param {*} interval_value
      * @param {*} interval_unit
-     * @param {*} end_time
      * @param {*} start_time
+     * @param {*} end_time
      * @param {*} bucket_limit
      * @returns {Array}
      */
@@ -54,8 +55,8 @@ class BinancePriceDownloader {
         symbol,
         interval_value,
         interval_unit,
-        end_time,
         start_time,
+        end_time,
         bucket_limit = 1000
     ) {
 
@@ -86,13 +87,20 @@ class BinancePriceDownloader {
                 const rst = await this.binance_repository.getCandlestickData(query_params);
                 full_results.push(rst);
                 // console.log(rst.map((item) => this.displayRow(item)));
+                if (this.bucket_callback_function) {
+                    this.bucket_callback_function({
+                        total_buckets: bucket_params.length,
+                        current_bucket: index,
+                        current_params: query_params,
+                    });
+                }
             } catch (error) {
                 console.log(error);
             }
         }
 
         const result = [].concat(...full_results);
-        console.log(result.map((item) => this.displayRow(item)));
+        // console.log(result.map((item) => this.displayRow(item)));
         return result;
     }
 
@@ -178,6 +186,83 @@ class BinancePriceDownloader {
         return this.timeToDate(item[0]);
     }
 
+
+    /**
+     * @param {Funcntion} func
+     * @returns {void}
+     */
+    setBucketCallback(func) {
+        this.bucket_callback_function = func;
+    }
+
+    /**
+     *
+     * @param {*} symbol
+     * @returns {Number}
+     */
+    async findStartTime(symbol) {
+
+        try {
+            const month_interval_results = await this.binance_repository
+                .getCandlestickData({
+                    symbol,
+                    interval: '1M',
+                    limit: 1000,
+                });
+
+            const [
+                first_month,
+            ] = month_interval_results;
+
+            // console.log(this.timeToDate(first_month[0]));
+
+            const day_interval_results = await this.binance_repository
+                .getCandlestickData({
+                    symbol,
+                    startTime: Number(first_month[0]),
+                    interval: '1d',
+                    limit: 366,
+                });
+
+            const [
+                first_day,
+            ] = day_interval_results;
+
+            // console.log(this.timeToDate(first_day[0]));
+
+            const hour_interval_results = await this.binance_repository
+                .getCandlestickData({
+                    symbol,
+                    startTime: Number(first_day[0]),
+                    interval: '1h',
+                    limit: 25,
+                });
+
+            const [
+                first_hour,
+            ] = hour_interval_results;
+
+            // console.log(this.timeToDate(first_hour[0]));
+
+            const minute_interval_results = await this.binance_repository
+                .getCandlestickData({
+                    symbol,
+                    startTime: Number(first_hour[0]),
+                    interval: '1m',
+                    limit: 61,
+                });
+
+            const [
+                first_minute,
+            ] = minute_interval_results;
+
+            return Number(first_minute[0]);
+
+        } catch (error) {
+            console.log('findStartTime Error: ', error);
+            throw error;
+        }
+    }
 }
 
 BinancePriceDownloader.instance = null;
