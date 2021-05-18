@@ -6,14 +6,23 @@ const {
     Binance,
 } = require('../repositories/api');
 
+const {
+    JsonFile,
+} = require('../repositories/JsonFile');
+
 class BinancePriceDownloader {
 
     /**
      * @param {Binance} binance_repository
+     * @param {JsonFile} json_file_repository
      * @returns {BinancePriceDownloader}
      */
-    constructor(binance_repository) {
+    constructor(
+        binance_repository,
+        json_file_repository
+    ) {
         this.binance_repository = binance_repository;
+        this.json_file_repository = json_file_repository;
         this.bucket_callback_function = null;
     }
 
@@ -24,7 +33,8 @@ class BinancePriceDownloader {
     static getInstance() {
         if (BinancePriceDownloader.instance === null) {
             BinancePriceDownloader.instance = new BinancePriceDownloader(
-                Binance.getInstance()
+                Binance.getInstance(),
+                JsonFile.getInstance()
             );
         }
         return BinancePriceDownloader.instance;
@@ -262,6 +272,32 @@ class BinancePriceDownloader {
             console.log('findStartTime Error: ', error);
             throw error;
         }
+    }
+
+    /**
+     * Check if all times in rows are correctly spaced
+     * @param {String} symbol
+     * @param {interval_unit} interval_value
+     * @param {interval_unit} interval_unit
+     * @returns {Boolean}
+     */
+    async downloadedFileIntegrityCheck(symbol, interval_value, interval_unit) {
+        const filename = `${symbol}_${interval_value}${interval_unit}.json`;
+        this.json_file_repository.setFileName(filename);
+
+        let data_is_ok = true;
+        const should_be_interval = this.getSecondMillisDuration(interval_value, interval_unit);
+        const data = await this.json_file_repository.getData();
+        for (let index = 1; index < data.length; index++) {
+            const step_interval_millis = data[index][0] - data[index - 1][0];
+            if (step_interval_millis !== should_be_interval) {
+                data_is_ok = false;
+                console.log(`index ${index - 1} and index ${index} problem`);
+                console.log(this.displayRow(data[index - 1]) + " " + data[index - 1][0]);
+                console.log(this.displayRow(data[index]) + " " + data[index][0]);
+            }
+        }
+        return data_is_ok;
     }
 }
 
