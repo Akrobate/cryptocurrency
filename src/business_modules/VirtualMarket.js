@@ -68,6 +68,11 @@ class VirtualMarket {
     async processInterval() {
         this.data_index++;
 
+        if (this.data_index > (this.data.length - 1)) {
+            this.stop();
+            return;
+        }
+
         // @todo: remove magic numbers
         this.open_time = Number(this.data[this.data_index][0]);
         this.open = Number(this.data[this.data_index][1]);
@@ -154,9 +159,21 @@ class VirtualMarket {
         return this.open_time;
     }
 
-    // eslint-disable-next-line require-jsdoc
-    setData(data) {
+
+    /**
+     * @param {*} data
+     * @param {Number} start_time
+     * @param {Number} end_time
+     * @returns {Void}
+     */
+    setData(data, start_time, end_time) {
         this.data = data;
+        if (start_time) {
+            this.data = this.data.filter((item) => Number(item[0]) >= start_time);
+        }
+        if (end_time) {
+            this.data = this.data.filter((item) => Number(item[0]) <= end_time);
+        }
     }
 
 
@@ -187,6 +204,20 @@ class VirtualMarket {
     async sleepAsync(duration) {
         await new Promise((resolve) => setTimeout(resolve, duration));
         return null;
+    }
+
+
+    /**
+     * @returns {Object}
+     */
+    getDataInformations() {
+        return {
+            count: this.data.length,
+            start_time: Number(this.data[0][0]),
+            end_time: Number(this.data[this.data.length - 1][0]),
+            start_date: this.timeToDate(Number(this.data[0][0])),
+            end_date: this.timeToDate(Number(this.data[this.data.length - 1][0])),
+        };
     }
 
 }
