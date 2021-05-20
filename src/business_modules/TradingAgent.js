@@ -30,9 +30,11 @@ class TradingAgent {
         this.trading_market = null;
 
         // Algorithmic data
-        this.target_historical_count = 60 * 24 * 7;
-        this.target_historical_count = 5;
+        // this.target_historical_count = 60 * 24 * 7;
+        this.target_historical_count = 120;
         this.historical_data = [];
+
+        this.current_average = null;
     }
 
 
@@ -66,11 +68,58 @@ class TradingAgent {
         });
         if (this.historical_data.length > this.target_historical_count) {
             this.historical_data.shift();
+            this.updateCurrentAverage();
         }
+
+        if (this.current_average !== null) {
+            // console.log('av:', this.current_average.toFixed(4), ' close:', this.trading_market.close.toFixed(4));
+            
+            // console.log(((this.current_average - this.trading_market.close));
+
+
+            if (this.trading_market.close < (this.current_average)) {
+                console.log('should by');
+                console.log('av:', this.current_average.toFixed(4), ' close:', this.trading_market.close.toFixed(4));
+            
+                /*
+                console.log('av:', this.current_average.toFixed(4), ' close:', this.trading_market.close.toFixed(4));
+                console.log("Orderiiiinngggggggggg")
+                this.trading_market.addOrder(
+                    this.trading_market.close * 0.01,
+                    10,
+                    'buy',
+                    (data) => {
+                        console.log('=========order==========');
+                        console.log(data);
+                        console.log('=========/order==========');
+                    }
+                );
+                */
+            }
+        }
+
         // console.log(this.historical_data.length);
         // console.log(this.historical_data.map(item => item.open));
     }
 
+
+    /**
+     * @param {Object} data
+     * @return {void}
+     */
+    processFilledOrder(data) {
+
+    }
+
+    /**
+     * @return {void}
+     */
+    updateCurrentAverage() {
+        // console.log(this.historical_data);
+        this.current_average = this.historical_data
+            .reduce((accumulator, item) => accumulator + item.close, 0)
+                / this.target_historical_count;
+    }
 
     /**
      * @param {String} wallet_currency
