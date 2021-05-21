@@ -79,34 +79,37 @@ binance_price_dowloader.setBucketCallback((data) => {
 
 (async () => {
 
-    await updateHistory('ADAUSDT', 1, 'm');
+    // await updateHistory('ADAUSDT', 1, 'm');
 
+    const resp = await binance_price_dowloader.downloadedFileIntegrityCheck('DOTUSDT', 1, 'm');
+    console.log(resp);
     return ;
-    const start_date = await binance_price_dowloader.findStartTime('DOTUSDT');
+
+    // const start_date = await binance_price_dowloader.findStartTime('DOTUSDT');
     // const aaa = await binance_price_dowloader.findStartTime('XLMUSDT');
-    console.log(timeToDate(start_date));
+    // console.log(timeToDate(start_date));
 
 
     const result = await binance_price_dowloader.getData(
         // 'XLMUSDT',
-        // 'ADABUSD',
-        'DOTUSDT',
+        'ADAUSDT',
+        // 'DOTUSDT',
         1,
         'm',
         // moment()
-        //     .subtract(5, 'years')
+        //     .subtract(29, 'days')
         //     .format('x'),
-        start_date,
-        moment()
-            .subtract(1, 'm')
-            .format('x'),
+        // start_date,
+        1539928740000,
+        // moment()
+        //     .subtract(22, 'days')
+        //     .format('x'),
+        1539941400000,
         1000
     );
     // console.log(result);
-    console.log(result.map(displayRow));
-
-    json_file.setFileName('DOTUSDT_1m.json');
-    json_file.saveData(result);
+    // console.log(result.map(displayRow));
+    result.forEach(item => console.log(item[0] + " " + displayRow(item) )  );
 
     // const params_1 = {
     //    symbol: 'XLMUSDT',

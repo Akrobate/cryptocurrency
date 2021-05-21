@@ -13,10 +13,7 @@ function formatWalletDisplay(wallet, agent) {
     Euro ballance:  ${wallet.getBalanceEuro()} euro
     Euro price:     ${wallet.price_euro} euro
     USDT price:     ${wallet.price_usdt} USDT`;
-
     console.log(str);
-
-
     agent
         .getOpenOrders()
         .filter((item) => item.symbol.includes(wallet.getCurrency()))
@@ -24,11 +21,6 @@ function formatWalletDisplay(wallet, agent) {
             console.log('\x1b[32m%s\x1b[0m', `    --- Position ${order.symbol}`);
             console.log('\x1b[32m%s\x1b[0m', `        ${order.side} price ${order.price}`);
         });
-
-}
-
-function format4Decimals(num) {
-    return Math.trunc(num * 10000) / 10000;
 }
 
 
@@ -45,7 +37,7 @@ function format4Decimals(num) {
             (item) => formatWalletDisplay(item, agent)
         );
         const revenue = eur_wallet + agent_balance;
-        console.log('Revenue: ', format4Decimals(revenue));
+        console.log(`Revenue: ${revenue.toFixed(4)}`);
 
         // Work in progress
         // agent.getOwnedCurrenciesAveragePrice().map(console.log);
