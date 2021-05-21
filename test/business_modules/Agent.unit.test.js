@@ -46,7 +46,7 @@ describe('Agent unit test', () => {
     });
 
 
-    it.only('Should be able to generate wallets from history file', async () => {
+    it.skip('Should be able to generate wallets from history file', async () => {
 
         mocks.binance_repository
             .expects('getLatestPrice')
