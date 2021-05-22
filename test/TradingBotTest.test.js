@@ -4,6 +4,8 @@ const {
     expect,
 } = require('chai');
 
+const moment = require('moment');
+
 const {
     VirtualMarket,
 } = require('../src/business_modules/VirtualMarket');
@@ -17,16 +19,11 @@ const {
 
 describe.only('TradingBot unit test', () => {
 
-    it('sdffsdf', () => {
-        const test = [1, 2, 3];
-
-        console.log(test);
-        test.unshift(0);
-        test.pop();
-        console.log(test);
+    it.skip('bla', () => {
+        console.log(moment('2021-05-20'));
     });
 
-    it.only('Test', async () => {
+    it('Test', async () => {
 
         const symbol = 'ADAUSDT';
         const interval_value = 1;
@@ -42,14 +39,22 @@ describe.only('TradingBot unit test', () => {
         console.log('USDT', tranding_agent.getWalletInstance('USDT').getBalance());
 
 
-        const filename = `${symbol}_${interval_value}${interval_unit}.json`;
+        // const filename = `${symbol}_${interval_value}${interval_unit}.json`;
+        const filename = `${symbol}_${interval_value}${interval_unit}_3month_test.json`;
         const json_file = JsonFile.getInstance();
         json_file.setFileName(filename);
         const historical_data = await json_file.getData();
 
         const virtual_market = new VirtualMarket(symbol, interval_value, interval_unit);
-        virtual_market.setData(historical_data);
 
+        const start_time = moment('2021-05-17').subtract(3, 'days')
+            .format('x');
+        const end_time = moment('2021-05-17').format('x');
+
+        console.log(start_time, end_time);
+        virtual_market.setData(historical_data, start_time, end_time);
+
+        console.log(virtual_market.getDataInformations());
 
         tranding_agent.setTradingMarket(virtual_market);
 
@@ -77,7 +82,11 @@ describe.only('TradingBot unit test', () => {
             }
         );
 
-        virtual_market.start();
+        try {
+            await virtual_market.start();
+        } catch (error) {
+            console.log(error);
+        }
 
 /*
         for (let tick = 0; tick < 1000; tick++) {
