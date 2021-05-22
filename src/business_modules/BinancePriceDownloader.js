@@ -56,6 +56,49 @@ class BinancePriceDownloader {
      * @param {*} symbol
      * @param {*} interval_value
      * @param {*} interval_unit
+     * @return {void}
+     */
+    async updateHistory(symbol, interval_value, interval_unit) {
+
+        const filename = `${symbol}_${interval_value}${interval_unit}.json`;
+        console.log(filename);
+        const millis_interval = this
+            .getSecondMillisDuration(interval_value, interval_unit);
+
+        this.json_file_repository.setFileName(filename);
+
+
+        let start_time = 0;
+        const end_time = moment().format('x') - millis_interval;
+
+        let saved_data = [];
+
+        try {
+            saved_data = await this.json_file_repository.getData();
+            const last = saved_data[saved_data.length - 1];
+            // console.log(timeToDate(last[0]));
+            start_time = Number(last[0]) + millis_interval;
+        } catch (error) {
+            start_time = await this.findStartTime(symbol);
+        }
+
+        const result = await this.getData(
+            symbol,
+            interval_value,
+            interval_unit,
+            start_time,
+            end_time,
+            1000
+        );
+
+        await this.json_file_repository.saveData([].concat(saved_data, result));
+        // console.log(result.map(displayRow));
+    }
+
+    /**
+     * @param {*} symbol
+     * @param {*} interval_value
+     * @param {*} interval_unit
      * @param {*} start_time
      * @param {*} end_time
      * @param {*} bucket_limit
@@ -293,8 +336,8 @@ class BinancePriceDownloader {
             if (step_interval_millis !== should_be_interval) {
                 data_is_ok = false;
                 console.log(`index ${index - 1} and index ${index} problem`);
-                console.log(this.displayRow(data[index - 1]) + " " + data[index - 1][0]);
-                console.log(this.displayRow(data[index]) + " " + data[index][0]);
+                console.log(`${this.displayRow(data[index - 1])} ${data[index - 1][0]}`);
+                console.log(`${this.displayRow(data[index])} ${data[index][0]}`);
             }
         }
         return data_is_ok;
