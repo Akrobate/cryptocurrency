@@ -6,8 +6,10 @@ class Operation {
     constructor({
         buy_currency,
         buy_value,
+        buy_fees,
         pay_currency,
         pay_value,
+        pay_fees,
         date,
     }) {
         this.buy_currency = buy_currency;
@@ -17,6 +19,8 @@ class Operation {
         this.pair_name = this.getPairName();
         this.pair_price = this.getPairPrice();
         this.date = new Date(date);
+        this.pay_fees = this.formatPriceValue(pay_fees);
+        this.buy_fees = this.formatPriceValue(buy_fees);
     }
 
     /**
