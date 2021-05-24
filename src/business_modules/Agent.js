@@ -54,8 +54,17 @@ class Agent {
             .operations_history.getOperationList();
 
         operation_list.forEach((operation) => {
+
             this.getWalletInstance(operation.getBuyCurrency()).deposit(operation.getBuyValue());
             this.getWalletInstance(operation.getPayCurrency()).withdraw(operation.getPayValue());
+
+            // Apply fees
+            if (operation.getBuyFees()) {
+                this.getWalletInstance(operation.getBuyCurrency()).withdraw(operation.getBuyFees());
+            }
+            if (operation.getPayFees()) {
+                this.getWalletInstance(operation.getPayCurrency()).withdraw(operation.getPayFees());
+            }
         });
     }
 
