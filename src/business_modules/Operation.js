@@ -62,6 +62,20 @@ class Operation {
     /**
      * @returns {Number}
      */
+    getBuyFees() {
+        return this.buy_fees;
+    }
+
+    /**
+     * @returns {Number}
+     */
+    getPayFees() {
+        return this.buy_fees;
+    }
+
+    /**
+     * @returns {Number}
+     */
     getPairPrice() {
         return this.pay_value / this.buy_value;
     }
