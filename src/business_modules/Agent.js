@@ -151,10 +151,24 @@ class Agent {
      */
     getOwnedCurrenciesAveragePrice() {
         const wallets_with_amout = this.getWalletsWithAmount();
+        const wallets_with_potisive_amount = wallets_with_amout
+            .filter((wallet) => wallet.getBalance() > 0);
+        const operation_list = this.operations_history.getOperationList();
+        const currencies_prices = {};
 
+        wallets_with_potisive_amount.forEach((wallet) => {
+            const currency = wallet.getBuyCurrency();
+
+            // price calculation based on operation list
+            const currency_operation_list = operation_list
+                .filter((operation) => operation.getBuyCurrency() === currency);
+
+            
+            currencies_prices[currency] = {};
+        });
         // console.log(wallets_with_amout);
         // console.log(this.operations_history);
-        return [];
+        return currencies_prices;
     }
 
 }
