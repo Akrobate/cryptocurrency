@@ -25,6 +25,8 @@ class Binance {
      */
     constructor() {
         this.base_api_url = 'https://api.binance.com/';
+
+        this.public_non_offical_base_api = 'https://www.binance.com/exchange-api/v2/';
     }
 
     /**
@@ -199,6 +201,44 @@ class Binance {
             default:
                 return this.getLatestPrice(symbol);
         }
+    }
+
+    //
+    //  "s":"BTCUSDT",
+    //  "st":"TRADING",
+    //  "b":"BTC",
+    //  "q":"USDT",
+    //  "ba":"฿",
+    //  "a":"",
+    //  "I":"0.00000100",
+    //  "ts":"0.01",
+    //  "an":"Bitcoin",
+    //  "qn":"TetherUS",
+    //  "o":"46915.84",
+    //  "h":"47499.43",
+    //  "l":"44961.09",
+    //  "c":"46791.85",
+    //  "v":"91500.82",
+    //  "qv":"4248420233.17226301",
+    //  "y":0,
+    //  "as":91500.81462400,
+    //  "pm":"FIAT",
+    //  "pn":"FIAT",
+    //  "cs":18620881,
+    //  "tags":["pow","mining-zone"],
+    //  "pom":false,
+    //  "pomt":null,
+    //  "etf":false
+    //
+    //  Market cap = cs * c;
+    //
+    /**
+     * @return {Object}
+     */
+    publicAssetServiceGetProduct() {
+        return axios
+            .get(`${this.public_non_offical_base_api}public/asset-service/product/get-products`)
+            .then((response) => response.data);
     }
 }
 
