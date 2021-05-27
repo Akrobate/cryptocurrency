@@ -151,24 +151,72 @@ class Agent {
      */
     getOwnedCurrenciesAveragePrice() {
         const wallets_with_amout = this.getWalletsWithAmount();
-        const wallets_with_potisive_amount = wallets_with_amout
+
+        const wallets_with_positive_amount = wallets_with_amout
             .filter((wallet) => wallet.getBalance() > 0);
+
         const operation_list = this.operations_history.getOperationList();
+
         const currencies_prices = {};
 
-        wallets_with_potisive_amount.forEach((wallet) => {
-            const currency = wallet.getBuyCurrency();
-
-            // price calculation based on operation list
-            const currency_operation_list = operation_list
-                .filter((operation) => operation.getBuyCurrency() === currency);
-
-            
-            currencies_prices[currency] = {};
+        wallets_with_positive_amount.forEach((wallet) => {
+            currencies_prices[wallet.getCurrency()] = this
+                .calculateWalletAverageBuyPrices(wallet, operation_list);
         });
         // console.log(wallets_with_amout);
         // console.log(this.operations_history);
         return currencies_prices;
+    }
+
+
+    /**
+     * @param {Wallet} wallet
+     * @param {Array<Operation>} operation_list
+     * @returns {Object}
+     */
+    calculateWalletAverageBuyPrices(wallet, operation_list) {
+        const currency = wallet.getCurrency();
+
+        // price calculation based on operation list
+        const currency_operation_list = operation_list
+            .filter((operation) => operation.getBuyCurrency() === currency);
+
+        // console.log('wallet', currency);
+        // console.log('wallet value', wallet.getBalance());
+        // console.log('pay valyes', pay_uniq_currency_list);
+        currency_operation_list.reverse();
+
+        const totals = {};
+        let current_ballance = wallet.getBalance();
+
+        for (const operation of currency_operation_list) {
+            // console.log(current_ballance, currency_operation.getBuyValue());
+            const pay_currency = operation.getPayCurrency();
+            if (totals[pay_currency] === undefined) {
+                totals[pay_currency] = {
+                    buy: 0,
+                    pay: 0,
+                };
+            }
+            if (current_ballance > operation.getBuyValue()) {
+                totals[pay_currency].buy += operation.getBuyValue();
+                totals[pay_currency].pay += operation.getPayValue();
+                current_ballance -= operation.getBuyValue();
+
+            } else {
+                const price = operation.getPayValue()
+                    / operation.getBuyValue();
+                totals[pay_currency].buy += current_ballance;
+                totals[pay_currency].pay += current_ballance * price;
+                current_ballance -= operation.getBuyValue();
+                break;
+            }
+        }
+
+        for (const pay_currency of Object.keys(totals)) {
+            totals[pay_currency].average = totals[pay_currency].pay / totals[pay_currency].buy;
+        }
+        return totals;
     }
 
 }
