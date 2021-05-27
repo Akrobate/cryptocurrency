@@ -19,6 +19,7 @@ const {
 describe('Agent unit test', () => {
 
     const seed_csv_file = './test/data/real_operation_history_seed.csv';
+    const operation_history_owned_average_prices_seed = './test/data/operation_history_owned_average_prices_seed.csv';
 
     const mocks = {};
 
@@ -78,6 +79,32 @@ describe('Agent unit test', () => {
 
         console.log(agent_balance);
         console.log(eur_wallet);
+    });
+
+    it.only('Should be able to generate average owned currencies price', async () => {
+
+        const agent = Agent.buildAgent();
+        await agent.loadOperationFile(operation_history_owned_average_prices_seed);
+        agent.generateWalletsState();
+
+        const result = agent.getOwnedCurrenciesAveragePrice();
+        // console.log(result);
+        expect(result).to.have.property('ADA');
+        expect(result.ADA).to.have.property('EUR');
+        expect(result.ADA.EUR).to.have.property('buy', 7);
+        expect(result.ADA.EUR).to.have.property('pay', 8);
+        expect(result.ADA.EUR).to.have.property('average', 1.1428571428571428);
+        expect(result.ADA).to.have.property('USDT');
+        expect(result.ADA.USDT).to.have.property('buy', 5);
+        expect(result.ADA.USDT).to.have.property('pay', 10);
+        expect(result.ADA.USDT).to.have.property('average', 2);
+
+        expect(result).to.have.property('DOT');
+        expect(result.DOT).to.have.property('USDT');
+        expect(result.DOT.USDT).to.have.property('buy', 2);
+        expect(result.DOT.USDT).to.have.property('pay', 56);
+        expect(result.DOT.USDT).to.have.property('average', 28);
+
     });
 
 
