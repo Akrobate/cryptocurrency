@@ -29,7 +29,7 @@ describe('CryptoCompare', () => {
         crypto_compare = null;
     });
 
-    it('Should be able to get coinlist', (done) => {
+    it('Should be able to get coinlist', async () => {
 
         mocks.axios.expects('get')
             .withArgs('https://min-api.cryptocompare.com/data/all/coinlist')
@@ -81,21 +81,20 @@ describe('CryptoCompare', () => {
                 }
             ));
 
-        crypto_compare.getCoinList()
-            .then((data) => {
-                try {
-                    expect(data).to.haveOwnProperty('Response');
-                    expect(data).to.haveOwnProperty('Message');
-                    expect(data).to.haveOwnProperty('BaseImageUrl');
-                    expect(data).to.haveOwnProperty('BaseLinkUrl');
-                    expect(data).to.haveOwnProperty('Data');
-                    expect(data).to.haveOwnProperty('Type');
-                } catch (error) {
-                    return done(error);
-                }
-                return done();
-            });
-    });
+        const data = await crypto_compare.getCoinList();
+        expect(data).to.haveOwnProperty('Response');
+        expect(data).to.haveOwnProperty('Message');
+        expect(data).to.haveOwnProperty('BaseImageUrl');
+        expect(data).to.haveOwnProperty('BaseLinkUrl');
+        expect(data).to.haveOwnProperty('Data');
+        expect(data).to.haveOwnProperty('Type');
+
+        // const keys = Object.keys(data.Data);
+        // console.log(keys);
+        // console.log(data.Data['DOT']);
+    })
+        .timeout(60000);
+
 
     it('Should be able to getPrice', (done) => {
         mocks.axios.expects('get')
