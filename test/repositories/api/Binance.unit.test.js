@@ -331,4 +331,36 @@ describe('Binance API', () => {
 
     });
 
+
+    it('Should be able to publicAssetServiceGetProduct', async () => {
+
+        mocks.axios.expects('get')
+            .once()
+            .returns(Promise.resolve({
+                data: {
+                    data: [],
+                    success: '',
+                    code: '',
+                    message: '',
+                    messageDetail: '',
+                },
+            }));
+
+        const response = await binance.publicAssetServiceGetProduct();
+        expect(response).to.have.property('data');
+        expect(response).to.have.property('success');
+        expect(response).to.have.property('code');
+        expect(response).to.have.property('message');
+        expect(response).to.have.property('messageDetail');
+
+        // const {
+        //     data,
+        // } = response;
+        // const res = data.filter((item) => item.b.includes('DOT'));
+        // console.log(res);
+        // console.log(res.map(a=>a.cs));
+    })
+        .timeout(4000);
+
+
 });
