@@ -17,7 +17,8 @@ const {
     JsonFile,
 } = require('../src/repositories/JsonFile');
 
-describe.only('TradingBot unit test', () => {
+
+describe.skip('TradingBot unit test', () => {
 
     it.skip('bla', () => {
         console.log(moment('2021-05-20'));
