@@ -6,13 +6,17 @@ const {
 
 const csv_file = './data/binance_history.csv';
 
-function formatWalletDisplay(wallet, agent) {
+function formatWalletDisplay(wallet, agent, average_prices) {
 
-    const str = `${wallet.getCurrency()} ============
+    const usdt_avg_price = average_prices[wallet.getCurrency()]?.USDT?.average;
+    let str = `${wallet.getCurrency()} ============
     Ballance:       ${wallet.getBalance()} ${wallet.getCurrency()}
     Euro ballance:  ${wallet.getBalanceEuro()} euro
     Euro price:     ${wallet.price_euro} euro
     USDT price:     ${wallet.price_usdt} USDT`;
+    if (usdt_avg_price) {
+        str += `\n    buy avg price: ${usdt_avg_price} USDT`;
+    }
     console.log(str);
     agent
         .getOpenOrders()
@@ -33,14 +37,15 @@ function formatWalletDisplay(wallet, agent) {
         agent.generateWalletsState();
         const agent_balance = await agent.calculateAgentBalance('EUR');
         const eur_wallet = await agent.getBalanceFromWallet('EUR');
+
+        const average_prices = agent.getOwnedCurrenciesAveragePrice();
+
         agent.getWalletsWithAmount().map(
-            (item) => formatWalletDisplay(item, agent)
+            (item) => formatWalletDisplay(item, agent, average_prices)
         );
         const revenue = eur_wallet + agent_balance;
         console.log(`Revenue: ${revenue.toFixed(4)}`);
 
-        // Work in progress
-        // agent.getOwnedCurrenciesAveragePrice().map(console.log);
     } catch (error) {
         console.log(error.response.data);
     }
