@@ -8,12 +8,22 @@ const csv_file = './data/binance_history.csv';
 
 function formatWalletDisplay(wallet, agent, average_prices) {
 
-    const usdt_avg_price = average_prices[wallet.getCurrency()]?.USDT?.average;
-    let str = `${wallet.getCurrency()} ============
-    Ballance:       ${wallet.getBalance()} ${wallet.getCurrency()}
-    Euro ballance:  ${wallet.getBalanceEuro()} euro
-    Euro price:     ${wallet.price_euro} euro
-    USDT price:     ${wallet.price_usdt} USDT`;
+    const data = prepareDataToDisplay(wallet, average_prices);
+
+    const {
+        currency,
+        currency_ballance,
+        euro_ballance,
+        usdt_avg_price,
+        price_euro,
+        price_usdt,
+    } = prepareDataToDisplay(wallet, average_prices);
+
+    let str = `${currency} ============
+    Ballance:       ${currency_ballance} ${currency}
+    Euro ballance:  ${euro_ballance} euro
+    Euro price:     ${price_euro} euro
+    USDT price:     ${price_usdt} USDT`;
     if (usdt_avg_price) {
         str += `\n    buy avg price: ${usdt_avg_price} USDT`;
     }
@@ -27,6 +37,23 @@ function formatWalletDisplay(wallet, agent, average_prices) {
         });
 }
 
+
+function prepareDataToDisplay(wallet, average_prices) {
+
+    const currency = wallet.getCurrency();
+    const currency_ballance = wallet.getBalance();
+    const euro_ballance = wallet.getBalanceEuro();
+    const data = {
+        currency,
+        currency_ballance,
+        euro_ballance,
+        usdt_avg_price: average_prices[currency]?.USDT?.average,
+        price_euro: wallet.price_euro,
+        price_usdt: wallet.price_usdt,
+    }
+
+    return data;
+}
 
 (async () => {
 
