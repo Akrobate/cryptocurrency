@@ -12,7 +12,6 @@ const params = {
     interval_unit: 'm',
 };
 
-
 const binance_price_dowloader = BinancePriceDownloader.getInstance();
 
 function timeToDate(time) {
@@ -38,7 +37,4 @@ binance_price_dowloader.setBucketCallback((data) => {
 
     // const resp = await binance_price_dowloader.downloadedFileIntegrityCheck('DOTUSDT', 1, 'm');
     // console.log(resp);
-    // const start_date = await binance_price_dowloader.findStartTime('DOTUSDT');
-    // const aaa = await binance_price_dowloader.findStartTime('XLMUSDT');
-    // console.log(timeToDate(start_date));
 })();

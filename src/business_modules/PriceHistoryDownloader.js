@@ -51,53 +51,47 @@ class PriceHistoryDownloader {
     /**
      * @return {Promise}
      */
-    mainLoopGetHistoricalPrices() {
+    async mainLoopGetHistoricalPrices() {
 
         let timestamp = Math.floor(Date.now() / 1000);
-        this.getLastItem()
-            .then((last_known_timestamp) => {
-                if (last_known_timestamp) {
-                    timestamp = last_known_timestamp;
-                }
+        const last_known_timestamp = await this.getLastItem();
+        if (last_known_timestamp) {
+            timestamp = last_known_timestamp;
+        }
 
-                const params = {
-                    fsym: this.symbol,
-                    tsyms: this.to_symbol,
-                    timestamp: timestamp - this.timestamp_interval_between_prices,
-                };
+        const params = {
+            fsym: this.symbol,
+            tsyms: this.to_symbol,
+            timestamp: timestamp - this.timestamp_interval_between_prices,
+        };
 
-                return this.crypto_compare
-                    .getPriceHistorical(params)
-                    .then((response) => {
-                        console.log(response);
-                        const data_to_insert = {
-                            'USD': response.BTC.USD,
-                            'EUR': response.BTC.EUR,
-                            'symbol': this.symbol,
-                            'date': new Date(params.timestamp * 1000),
-                        };
-                        return this.mongo_db_repository
-                            .insertDocument(this.collection_name, data_to_insert)
-                            .then(() => {
-                                setTimeout(() => this.mainLoopGetHistoricalPrices(), 10000);
-                            });
-                    });
-            });
+        const response = await this.crypto_compare
+            .getPriceHistorical(params);
+        console.log(response);
+        const data_to_insert = {
+            'USD': response.BTC.USD,
+            'EUR': response.BTC.EUR,
+            'symbol': this.symbol,
+            'date': new Date(params.timestamp * 1000),
+        };
+        await this.mongo_db_repository
+            .insertDocument(this.collection_name, data_to_insert);
+
+        setTimeout(() => this.mainLoopGetHistoricalPrices(), 10000);
     }
 
 
     /**
      * @returns {Promise}
      */
-    getLastItem() {
+    async getLastItem() {
         const options = {
             'limit': 1,
             'sort': {
                 date: 1,
             },
         };
-
-        this.mongo_db_repository
+        const data = await this.mongo_db_repository
             .findDocumentList(
                 this.collection_name,
                 {},
@@ -105,14 +99,11 @@ class PriceHistoryDownloader {
                 0,
                 null,
                 options.sort
-            )
-            .then((data) => {
-                if (data.length === 1) {
-                    return Math.floor(new Date(data[0].date).getTime() / 1000);
-                }
-                return null;
-            });
-
+            );
+        if (data.length === 1) {
+            return Math.floor(new Date(data[0].date).getTime() / 1000);
+        }
+        return null;
     }
 
     /**
