@@ -19,6 +19,7 @@ const cryptocurrencies = [
     'DOT',
     'EGLD',
     'DOGE',
+    'VET',
 ];
 
 const to_currency = 'EUR';
