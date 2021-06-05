@@ -51,4 +51,5 @@ Logger.instance = null;
 
 module.exports = {
     logger: Logger.getInstance(),
+    Logger,
 };

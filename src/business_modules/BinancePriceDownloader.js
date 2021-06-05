@@ -3,6 +3,10 @@
 const moment = require('moment');
 
 const {
+    logger,
+} = require('../logger');
+
+const {
     Binance,
 } = require('../repositories/api');
 
@@ -61,7 +65,7 @@ class BinancePriceDownloader {
     async updateHistory(symbol, interval_value, interval_unit) {
 
         const filename = `${symbol}_${interval_value}${interval_unit}.json`;
-        console.log(filename);
+        logger.log(filename);
         const millis_interval = this
             .getSecondMillisDuration(interval_value, interval_unit);
 
@@ -76,7 +80,7 @@ class BinancePriceDownloader {
         try {
             saved_data = await this.json_file_repository.getData();
             const last = saved_data[saved_data.length - 1];
-            // console.log(timeToDate(last[0]));
+            // logger.log(timeToDate(last[0]));
             start_time = Number(last[0]) + millis_interval;
         } catch (error) {
             start_time = await this.findStartTime(symbol);
@@ -92,7 +96,6 @@ class BinancePriceDownloader {
         );
 
         await this.json_file_repository.saveData([].concat(saved_data, result));
-        // console.log(result.map(displayRow));
     }
 
     /**
@@ -124,7 +127,7 @@ class BinancePriceDownloader {
             bucket_limit
         );
 
-        // console.log(bucket_params);
+        // logger.log(bucket_params);
 
         const full_results = [];
         for (let index = 0; index < bucket_params.length; index++) {
@@ -135,11 +138,11 @@ class BinancePriceDownloader {
                 startTime: bucket_params[index].start_time,
                 limit: bucket_limit,
             };
-            // console.log(query_params);
+            // logger.log(query_params);
             try {
                 const rst = await this.binance_repository.getCandlestickData(query_params);
                 full_results.push(rst);
-                // console.log(rst.map((item) => this.displayRow(item)));
+                // logger.log(rst.map((item) => this.displayRow(item)));
                 if (this.bucket_callback_function) {
                     this.bucket_callback_function({
                         total_buckets: bucket_params.length,
@@ -148,12 +151,12 @@ class BinancePriceDownloader {
                     });
                 }
             } catch (error) {
-                console.log(error);
+                logger.log(error);
             }
         }
 
         const result = [].concat(...full_results);
-        // console.log(result.map((item) => this.displayRow(item)));
+        // logger.log(result.map((item) => this.displayRow(item)));
         return result;
     }
 
@@ -206,7 +209,7 @@ class BinancePriceDownloader {
         const bucket_params = [];
 
         for (let index = 0; index < ceil_total_buckets_count; index++) {
-            // console.log(index);
+            // logger.log(index);
             const theorical_end_time = Math
                 .round(start_time + ((index + 1) * total_secondes_per_bucket));
             const param = {
@@ -267,7 +270,7 @@ class BinancePriceDownloader {
                 first_month,
             ] = month_interval_results;
 
-            // console.log(this.timeToDate(first_month[0]));
+            // logger.log(this.timeToDate(first_month[0]));
 
             const day_interval_results = await this.binance_repository
                 .getCandlestickData({
@@ -281,7 +284,7 @@ class BinancePriceDownloader {
                 first_day,
             ] = day_interval_results;
 
-            // console.log(this.timeToDate(first_day[0]));
+            // logger.log(this.timeToDate(first_day[0]));
 
             const hour_interval_results = await this.binance_repository
                 .getCandlestickData({
@@ -295,7 +298,7 @@ class BinancePriceDownloader {
                 first_hour,
             ] = hour_interval_results;
 
-            // console.log(this.timeToDate(first_hour[0]));
+            // logger.log(this.timeToDate(first_hour[0]));
 
             const minute_interval_results = await this.binance_repository
                 .getCandlestickData({
@@ -312,7 +315,7 @@ class BinancePriceDownloader {
             return Number(first_minute[0]);
 
         } catch (error) {
-            console.log('findStartTime Error: ', error);
+            logger.log('findStartTime Error: ', error);
             throw error;
         }
     }
@@ -335,9 +338,9 @@ class BinancePriceDownloader {
             const step_interval_millis = data[index][0] - data[index - 1][0];
             if (step_interval_millis !== should_be_interval) {
                 data_is_ok = false;
-                console.log(`index ${index - 1} and index ${index} problem`);
-                console.log(`${this.displayRow(data[index - 1])} ${data[index - 1][0]}`);
-                console.log(`${this.displayRow(data[index])} ${data[index][0]}`);
+                logger.log(`index ${index - 1} and index ${index} problem`);
+                logger.log(`${this.displayRow(data[index - 1])} ${data[index - 1][0]}`);
+                logger.log(`${this.displayRow(data[index])} ${data[index][0]}`);
             }
         }
         return data_is_ok;
