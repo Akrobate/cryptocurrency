@@ -6,11 +6,18 @@ const {
     BinancePriceDownloader,
 } = require('../business_modules/BinancePriceDownloader');
 
-const params = {
-    symbol: 'ADAUSDT',
-    interval_value: 1,
-    interval_unit: 'm',
-};
+const params = [
+    {
+        symbol: 'ADAUSDT',
+        interval_value: 1,
+        interval_unit: 'm',
+    },
+    {
+        symbol: 'DOTUSDT',
+        interval_value: 1,
+        interval_unit: 'm',
+    },
+];
 
 const binance_price_dowloader = BinancePriceDownloader.getInstance();
 
@@ -24,16 +31,24 @@ function displayRow(item) {
 }
 
 binance_price_dowloader.setBucketCallback((data) => {
-    console.log(`${data.current_bucket} / ${data.total_buckets} - ${timeToDate(data.current_params.endTime)}`);
+    console.log(`${data.current_params.symbol} - ${data.current_bucket} / ${data.total_buckets} - ${timeToDate(data.current_params.endTime)}`);
 });
 
 (async () => {
 
-    await binance_price_dowloader.updateHistory(
-        params.symbol,
-        params.interval_value,
-        params.interval_unit
-    );
+    for (let params_index = 0; params_index < params.length; params_index++) {
+        const {
+            symbol,
+            interval_value,
+            interval_unit,
+        } = params[params_index];
+
+        await binance_price_dowloader.updateHistory(
+            symbol,
+            interval_value,
+            interval_unit
+        );
+    }
 
     // const resp = await binance_price_dowloader.downloadedFileIntegrityCheck('DOTUSDT', 1, 'm');
     // console.log(resp);
