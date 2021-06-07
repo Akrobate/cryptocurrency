@@ -10,7 +10,7 @@ class Wallet {
     constructor(currency) {
         this.currency = currency;
         this.balance = null;
-        this.balance_euro = 0;
+        // this.balance_euro = 0;
         this.price_euro = null;
         this.price_usdt = null;
         this.history = [];
@@ -128,14 +128,26 @@ class Wallet {
     async updatePrices() {
         if (this.currency !== 'EUR') {
             const result_euro = await this.binance_repository
-                .adaptSymbolAndGetLastestPrice(`${this.currency}EUR`);
+                .adaptSymbolAndGetLastestPrice(`${this.currency}EUR`)
+                .catch(() => ({
+                    price: null,
+                }));
             this.price_euro = Number(result_euro.price);
         }
 
         if (this.currency !== 'USDT') {
             const result_usdt = await this.binance_repository
-                .adaptSymbolAndGetLastestPrice(`${this.currency}USDT`);
+                .adaptSymbolAndGetLastestPrice(`${this.currency}USDT`)
+                .catch(() => ({
+                    price: 0,
+                }));
             this.price_usdt = Number(result_usdt.price);
+        }
+
+        if (this.price_euro === 0) {
+            const result_usdt_euro = await this.binance_repository
+                .adaptSymbolAndGetLastestPrice('USDTEUR');
+            this.price_euro = Number(result_usdt_euro.price) * this.price_usdt;
         }
     }
 
