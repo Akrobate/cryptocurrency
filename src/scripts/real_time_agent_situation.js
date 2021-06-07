@@ -74,7 +74,7 @@ function prepareDataToDisplay(wallet, average_prices) {
         console.log(`Revenue: ${revenue.toFixed(4)}`);
 
     } catch (error) {
-        console.log(error.response.data);
+        console.log(error);
     }
 
 })();
