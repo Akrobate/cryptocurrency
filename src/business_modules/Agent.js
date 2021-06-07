@@ -103,7 +103,8 @@ class Agent {
         }
 
         for (const cryptocurrency of cryptocurrencies) {
-            await this.wallets[cryptocurrency].updatePrices();
+            await this.wallets[cryptocurrency].updatePrices()
+                .catch((error) => console.log(error));
         }
 
         const balance = cryptocurrencies.reduce((accumulator, currency) => {
