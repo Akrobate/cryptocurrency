@@ -35,7 +35,6 @@ binance_price_dowloader.setBucketCallback((data) => {
 });
 
 (async () => {
-
     for (let params_index = 0; params_index < params.length; params_index++) {
         const {
             symbol,
@@ -49,7 +48,4 @@ binance_price_dowloader.setBucketCallback((data) => {
             interval_unit
         );
     }
-
-    // const resp = await binance_price_dowloader.downloadedFileIntegrityCheck('DOTUSDT', 1, 'm');
-    // console.log(resp);
 })();
