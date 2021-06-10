@@ -7,17 +7,19 @@ class DyncamicPricesReferential {
     constructor() {
 
         // prices holder example
-        this.prices = {
-            'ADA': {
-                available_market_prices: {
-                    'USDT': 0.01,
-                },
-                prices: {
-                    'USDT': 0.01,
-                    'EUR': 0.02,
-                },
-            },
-        };
+        // example:
+        // this.prices = {
+        //     'ADA': {
+        //         available_market_prices: {
+        //             'USDT': 0.01,
+        //         },
+        //         prices: {
+        //             'USDT': 0.01,
+        //             'EUR': 0.02,
+        //         },
+        //     },
+        // };
+        this.prices = {};
 
         this.currency_list = [];
         this.price_currency_list = [];
@@ -56,6 +58,13 @@ class DyncamicPricesReferential {
         //         .adaptSymbolAndGetLastestPrice('USDTEUR');
         //     this.price_euro = Number(result_usdt_euro.price) * this.price_usdt;
         // }
+    }
+
+    // eslint-disable-next-line require-jsdoc
+    updatePricesFromAvailableRealPrices() {
+        Object.keys(this.prices).map((currency) => {
+
+        });
     }
 
 
