@@ -87,12 +87,20 @@ class DyncamicPricesReferential {
 
     // eslint-disable-next-line require-jsdoc
     addCurrency(currency) {
-        this.currency_list.push(currency);
+        if (!this.currency_list.includes(currency)) {
+            this.currency_list.push(currency);
+            this.prices[currency] = {
+                available_market_prices: {},
+                prices: {},
+            };
+        }
     }
 
     // eslint-disable-next-line require-jsdoc
     addPriceCurrency(currency) {
-        this.price_currency_list.push(currency);
+        if (!this.price_currency_list.includes(currency)) {
+            this.price_currency_list.push(currency);
+        }
     }
 
     // eslint-disable-next-line require-jsdoc
