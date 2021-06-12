@@ -62,8 +62,15 @@ class DyncamicPricesReferential {
 
     // eslint-disable-next-line require-jsdoc
     updatePricesFromAvailableRealPrices() {
-        Object.keys(this.prices).map((currency) => {
-
+        Object.keys(this.prices).forEach((currency) => {
+            this.price_currency_list.forEach((price_currency) => {
+                if (this.prices[currency].available_market_prices[price_currency]) {
+                    this.prices[currency].prices[price_currency] = this
+                        .prices[currency].available_market_prices[price_currency];
+                } else {
+                    this.prices[currency].prices[price_currency] = null;
+                }
+            });
         });
     }
 
