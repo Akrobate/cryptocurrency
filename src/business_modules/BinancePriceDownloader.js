@@ -14,6 +14,9 @@ const {
     JsonFile,
 } = require('../repositories/JsonFile');
 
+const {
+    BinancePeriodReferential,
+} = require('./BinancePeriodReferential');
 class BinancePriceDownloader {
 
     /**
@@ -162,32 +165,13 @@ class BinancePriceDownloader {
 
 
     /**
+     * Proxy function
      * @param {*} interval_value
      * @param {*} interval_unit
      * @return {Number}
      */
     getSecondMillisDuration(interval_value, interval_unit) {
-
-        let interval_seconds = 0;
-        if (interval_unit === 'm') {
-            interval_seconds = 60;
-        }
-        if (interval_unit === 'h') {
-            interval_seconds = 60 * 60;
-        }
-        if (interval_unit === 'd') {
-            interval_seconds = 60 * 60 * 24;
-        }
-        if (interval_unit === 'w') {
-            interval_seconds = 60 * 60 * 24 * 7;
-        }
-        if (interval_unit === 'M') {
-            interval_seconds = 60 * 60 * 24 * 30;
-        }
-
-        const total_duration = interval_seconds * interval_value;
-        const interval_seconds_milliseconds = total_duration * 1000;
-        return interval_seconds_milliseconds;
+        return BinancePeriodReferential.getSecondMillisDuration(interval_value, interval_unit);
     }
 
 
