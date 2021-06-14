@@ -10,7 +10,8 @@
     "test": "mocha --recursive",
     "export": "node src/export_market.js",
     "agent": "node src/run_agent.js",
-    "cover": "nyc npm test"
+    "cover": "nyc npm test",
+    "situation": "node src/scripts/real_time_agent_situation.js"
   },
   "author": "Artiom FEDOROV <fedorov.artiom@yahoo.com>",
   "license": "ISC",
