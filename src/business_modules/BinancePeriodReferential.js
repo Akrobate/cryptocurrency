@@ -3,6 +3,19 @@
 class BinancePeriodReferential {
 
     /**
+     * @return {Object}
+     */
+    static get INTERVAL() {
+        return {
+            MINUTE: 'm',
+            HOUR: 'h',
+            DAY: 'd',
+            WEEK: 'w',
+            MONTH: 'M',
+        };
+    }
+
+    /**
      * @param {*} interval_value
      * @param {*} interval_unit
      * @return {Number}
@@ -10,19 +23,19 @@ class BinancePeriodReferential {
     static getSecondMillisDuration(interval_value, interval_unit) {
 
         let interval_seconds = 0;
-        if (interval_unit === 'm') {
+        if (interval_unit === BinancePeriodReferential.INTERVAL.MINUTE) {
             interval_seconds = 60;
         }
-        if (interval_unit === 'h') {
+        if (interval_unit === BinancePeriodReferential.INTERVAL.HOUR) {
             interval_seconds = 60 * 60;
         }
-        if (interval_unit === 'd') {
+        if (interval_unit === BinancePeriodReferential.INTERVAL.DAY) {
             interval_seconds = 60 * 60 * 24;
         }
-        if (interval_unit === 'w') {
+        if (interval_unit === BinancePeriodReferential.INTERVAL.WEEK) {
             interval_seconds = 60 * 60 * 24 * 7;
         }
-        if (interval_unit === 'M') {
+        if (interval_unit === BinancePeriodReferential.INTERVAL.MONTH) {
             interval_seconds = 60 * 60 * 24 * 30;
         }
 
@@ -40,63 +53,63 @@ class BinancePeriodReferential {
         return [
             {
                 value: 1,
-                unit: 'm',
+                unit: BinancePeriodReferential.INTERVAL.MINUTE,
             },
             {
                 value: 3,
-                unit: 'm',
+                unit: BinancePeriodReferential.INTERVAL.MINUTE,
             },
             {
                 value: 5,
-                unit: 'm',
+                unit: BinancePeriodReferential.INTERVAL.MINUTE,
             },
             {
                 value: 15,
-                unit: 'm',
+                unit: BinancePeriodReferential.INTERVAL.MINUTE,
             },
             {
                 value: 30,
-                unit: 'm',
+                unit: BinancePeriodReferential.INTERVAL.MINUTE,
             },
             {
                 value: 1,
-                unit: 'h',
+                unit: BinancePeriodReferential.INTERVAL.HOUR,
             },
             {
                 value: 2,
-                unit: 'h',
+                unit: BinancePeriodReferential.INTERVAL.HOUR,
             },
             {
                 value: 4,
-                unit: 'h',
+                unit: BinancePeriodReferential.INTERVAL.HOUR,
             },
             {
                 value: 6,
-                unit: 'h',
+                unit: BinancePeriodReferential.INTERVAL.HOUR,
             },
             {
                 value: 8,
-                unit: 'h',
+                unit: BinancePeriodReferential.INTERVAL.HOUR,
             },
             {
                 value: 12,
-                unit: 'h',
+                unit: BinancePeriodReferential.INTERVAL.HOUR,
             },
             {
                 value: 1,
-                unit: 'd',
+                unit: BinancePeriodReferential.INTERVAL.DAY,
             },
             {
                 value: 3,
-                unit: 'd',
+                unit: BinancePeriodReferential.INTERVAL.DAY,
             },
             {
                 value: 1,
-                unit: 'w',
+                unit: BinancePeriodReferential.INTERVAL.WEEK,
             },
             {
                 value: 1,
-                unit: 'M',
+                unit: BinancePeriodReferential.INTERVAL.MONTH,
             },
         ];
     }
