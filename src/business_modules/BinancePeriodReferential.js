@@ -23,22 +23,25 @@ class BinancePeriodReferential {
     static getSecondMillisDuration(interval_value, interval_unit) {
 
         let interval_seconds = 0;
-        if (interval_unit === BinancePeriodReferential.INTERVAL.MINUTE) {
-            interval_seconds = 60;
+        switch (interval_unit) {
+            case BinancePeriodReferential.INTERVAL.MINUTE:
+                interval_seconds = 60;
+                break;
+            case BinancePeriodReferential.INTERVAL.HOUR:
+                interval_seconds = 60 * 60;
+                break;
+            case BinancePeriodReferential.INTERVAL.DAY:
+                interval_seconds = 60 * 60 * 24;
+                break;
+            case BinancePeriodReferential.INTERVAL.WEEK:
+                interval_seconds = 60 * 60 * 24 * 7;
+                break;
+            case BinancePeriodReferential.INTERVAL.MONTH:
+                interval_seconds = 60 * 60 * 24 * 30;
+                break;
+            default:
+                break;
         }
-        if (interval_unit === BinancePeriodReferential.INTERVAL.HOUR) {
-            interval_seconds = 60 * 60;
-        }
-        if (interval_unit === BinancePeriodReferential.INTERVAL.DAY) {
-            interval_seconds = 60 * 60 * 24;
-        }
-        if (interval_unit === BinancePeriodReferential.INTERVAL.WEEK) {
-            interval_seconds = 60 * 60 * 24 * 7;
-        }
-        if (interval_unit === BinancePeriodReferential.INTERVAL.MONTH) {
-            interval_seconds = 60 * 60 * 24 * 30;
-        }
-
         const total_duration = interval_seconds * interval_value;
         const interval_seconds_milliseconds = total_duration * 1000;
         return interval_seconds_milliseconds;
