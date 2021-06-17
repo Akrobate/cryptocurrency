@@ -81,7 +81,7 @@ describe('Agent unit test', () => {
         console.log(eur_wallet);
     });
 
-    it.only('Should be able to generate average owned currencies price', async () => {
+    it('Should be able to generate average owned currencies price', async () => {
 
         const agent = Agent.buildAgent();
         await agent.loadOperationFile(operation_history_owned_average_prices_seed);

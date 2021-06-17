@@ -1,6 +1,6 @@
 'use strict';
 
-class DyncamicPricesReferential {
+class DynamicPricesReferential {
 
 
     // eslint-disable-next-line require-jsdoc
@@ -23,6 +23,15 @@ class DyncamicPricesReferential {
 
         this.currency_list = [];
         this.price_currency_list = [];
+    }
+
+
+    // eslint-disable-next-line require-jsdoc
+    static getInstance() {
+        if (DynamicPricesReferential.instance === null) {
+            DynamicPricesReferential.instance = new DynamicPricesReferential();
+        }
+        return DynamicPricesReferential.instance;
     }
 
     /**
@@ -116,8 +125,8 @@ class DyncamicPricesReferential {
     }
 }
 
-DyncamicPricesReferential.instance = null;
+DynamicPricesReferential.instance = null;
 
 module.exports = {
-    DyncamicPricesReferential,
+    DynamicPricesReferential,
 };
