@@ -35,11 +35,11 @@ class DynamicPricesReferential {
     }
 
     /**
-     * @param {Object} market_repository
+     * @param {Object} binance_repository
      * @returns {void}
      */
-    injectDependencies(market_repository) {
-        this.market_repository = market_repository;
+    injectDependencies(binance_repository) {
+        this.binance_repository = binance_repository;
     }
 
 
