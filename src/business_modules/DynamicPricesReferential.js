@@ -61,12 +61,7 @@ class DynamicPricesReferential {
                 this.setMarketPrice(currency, price_currency, Number(result_euro.price));
             }
         }
-
-        // if (this.price_euro === 0) {
-        //     const result_usdt_euro = await this.binance_repository
-        //         .adaptSymbolAndGetLastestPrice('USDTEUR');
-        //     this.price_euro = Number(result_usdt_euro.price) * this.price_usdt;
-        // }
+        this.updatePricesFromAvailableRealPrices();
     }
 
     // eslint-disable-next-line require-jsdoc
