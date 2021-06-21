@@ -23,6 +23,18 @@ class DynamicPricesReferential {
 
         this.currency_list = [];
         this.price_currency_list = [];
+
+        // example
+        // {
+        //     USDT: {
+        //         EUR: 0.01,
+        //     },
+        //     EUR: {
+        //         USDT: 0.02
+        //     }
+        // }
+        this.prices_conversion_mapper = {};
+
     }
 
 
@@ -117,6 +129,14 @@ class DynamicPricesReferential {
     // eslint-disable-next-line require-jsdoc
     getPrice(currency) {
         return this.price[currency].price;
+    }
+
+    /**
+     * Will provide a prices mapping to internally convert prices
+     * between prices currencies
+     */
+    updatePricesConversionMapping() {
+        //
     }
 }
 
