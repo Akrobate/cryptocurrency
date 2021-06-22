@@ -30,5 +30,16 @@ console.log(prices_state)
 
     });
 
+
+    it.only('updatePricesConversionMapping', () => {
+        const dyncamic_prices_referential = DynamicPricesReferential.getInstance();
+        dyncamic_prices_referential.injectDependencies(Binance.getInstance());
+        dyncamic_prices_referential.addCurrency('ADA');
+        dyncamic_prices_referential.addPriceCurrency('USDT');
+        dyncamic_prices_referential.addPriceCurrency('EUR');
+        dyncamic_prices_referential.addPriceCurrency('USD');
+
+        dyncamic_prices_referential.updatePricesConversionMapping();
+    })
 });
 

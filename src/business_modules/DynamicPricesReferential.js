@@ -134,9 +134,23 @@ class DynamicPricesReferential {
     /**
      * Will provide a prices mapping to internally convert prices
      * between prices currencies
+     * @return {void}
      */
-    updatePricesConversionMapping() {
+    async updatePricesConversionMapping() {
         //
+        const mapper = {};
+        this.price_currency_list.forEach((item) => {
+            mapper[item] = this.price_currency_list.filter((currency) => currency !== item);
+        });
+
+        console.log(mapper);
+        /*
+        const result_euro = await this.binance_repository
+            .adaptSymbolAndGetLastestPrice(`${currency}${price_currency}`)
+            .catch(() => ({
+                price: null,
+            }));
+        */
     }
 }
 
