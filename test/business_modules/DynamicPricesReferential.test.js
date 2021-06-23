@@ -15,14 +15,14 @@ const {
 describe.only('DynamicPricesReferential', () => {
 
     it('Dynamic prices', async () => {
-        const dyncamic_prices_referential = DynamicPricesReferential.getInstance();
-        dyncamic_prices_referential.injectDependencies(Binance.getInstance());
-        dyncamic_prices_referential.addCurrency('ADA');
-        dyncamic_prices_referential.addPriceCurrency('USDT');
-        dyncamic_prices_referential.addPriceCurrency('EUR');
-        dyncamic_prices_referential.addPriceCurrency('USD');
-        await dyncamic_prices_referential.update();
-        const prices_state = dyncamic_prices_referential.prices;
+        const dynamic_prices_referential = DynamicPricesReferential.getInstance();
+        dynamic_prices_referential.injectDependencies(Binance.getInstance());
+        dynamic_prices_referential.addCurrency('ADA');
+        dynamic_prices_referential.addPriceCurrency('USDT');
+        dynamic_prices_referential.addPriceCurrency('EUR');
+        dynamic_prices_referential.addPriceCurrency('USD');
+        await dynamic_prices_referential.update();
+        const prices_state = dynamic_prices_referential.prices;
 
         console.log(prices_state);
         expect(prices_state).to.have.property('ADA');
@@ -33,23 +33,23 @@ describe.only('DynamicPricesReferential', () => {
 
 
     it('updatePricesConversionMapping', () => {
-        const dyncamic_prices_referential = DynamicPricesReferential.getInstance();
-        dyncamic_prices_referential.injectDependencies(Binance.getInstance());
-        dyncamic_prices_referential.addCurrency('ADA');
-        dyncamic_prices_referential.addPriceCurrency('USDT');
-        dyncamic_prices_referential.addPriceCurrency('EUR');
-        dyncamic_prices_referential.addPriceCurrency('USD');
+        const dynamic_prices_referential = DynamicPricesReferential.getInstance();
+        dynamic_prices_referential.injectDependencies(Binance.getInstance());
+        dynamic_prices_referential.addCurrency('ADA');
+        dynamic_prices_referential.addPriceCurrency('USDT');
+        dynamic_prices_referential.addPriceCurrency('EUR');
+        dynamic_prices_referential.addPriceCurrency('USD');
 
-        dyncamic_prices_referential.updatePricesConversionMapping();
+        dynamic_prices_referential.updatePricesConversionMapping();
     });
 
     it.only('updatePricesConversionMapping', () => {
-        const dyncamic_prices_referential = DynamicPricesReferential.getInstance();
-        dyncamic_prices_referential.addPriceCurrency('USDT');
-        dyncamic_prices_referential.addPriceCurrency('EUR');
-        dyncamic_prices_referential.addPriceCurrency('USD');
+        const dynamic_prices_referential = DynamicPricesReferential.getInstance();
+        dynamic_prices_referential.addPriceCurrency('USDT');
+        dynamic_prices_referential.addPriceCurrency('EUR');
+        dynamic_prices_referential.addPriceCurrency('USD');
 
-        const mapping_structure = dyncamic_prices_referential
+        const mapping_structure = dynamic_prices_referential
             .preparePricesConversionMappingStructure();
         expect(mapping_structure).to.have.property('USDT');
         expect(mapping_structure).to.have.property('EUR');
