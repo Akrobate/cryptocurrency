@@ -138,10 +138,7 @@ class DynamicPricesReferential {
      */
     async updatePricesConversionMapping() {
         //
-        const mapper = {};
-        this.price_currency_list.forEach((item) => {
-            mapper[item] = this.price_currency_list.filter((currency) => currency !== item);
-        });
+        const mapper = this.preparePricesConversionMappingStructure();
 
         console.log(mapper);
         /*
@@ -151,6 +148,26 @@ class DynamicPricesReferential {
                 price: null,
             }));
         */
+    }
+
+
+    /**
+     * @return {Object}
+     */
+    preparePricesConversionMappingStructure() {
+        const mapper = {};
+        this.price_currency_list.forEach((item) => {
+            mapper[item] = {};
+            this
+                .price_currency_list
+                .filter((currency) => currency !== item)
+                .forEach((currency) => {
+                    mapper[item][currency] = {
+                        price: null,
+                    };
+                });
+        });
+        return mapper;
     }
 }
 
