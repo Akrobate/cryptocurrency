@@ -58,6 +58,8 @@ describe.only('DynamicPricesReferential', () => {
         expect(mapping_structure.USDT).not.to.have.property('USDT');
         expect(mapping_structure.USDT).to.have.property('EUR');
         expect(mapping_structure.USDT).to.have.property('USD');
+
+        console.log(mapping_structure);
     });
 
 });

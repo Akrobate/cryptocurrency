@@ -148,6 +148,8 @@ class DynamicPricesReferential {
                 price: null,
             }));
         */
+
+
     }
 
 
@@ -168,6 +170,21 @@ class DynamicPricesReferential {
                 });
         });
         return mapper;
+    }
+
+
+    /**
+     * @param {*} mapper
+     * @returns {Array}
+     */
+    generatePairsFromPirceConversionMappingStructure(mapper) {
+        const all_prices_conversion_paris = [];
+        Object.keys(mapper).forEach((from) => {
+            Object.keys(mapper[from]).forEach((to) => {
+                all_prices_conversion_paris.push(`${from}${to}`);
+            });
+        });
+        return all_prices_conversion_paris;
     }
 }
 
