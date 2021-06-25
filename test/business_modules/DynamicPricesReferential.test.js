@@ -59,7 +59,15 @@ describe.only('DynamicPricesReferential', () => {
         expect(mapping_structure.USDT).to.have.property('EUR');
         expect(mapping_structure.USDT).to.have.property('USD');
 
+        const pair_list = dynamic_prices_referential
+            .generatePairsFromPirceConversionMappingStructure(mapping_structure);
+
+        const pair_prices = dynamic_prices_referential
+            .tryToGetRealPricesForPairs(pair_list);
+
         console.log(mapping_structure);
+        console.log(pair_list);
+        console.log(pair_prices);
     });
 
 });

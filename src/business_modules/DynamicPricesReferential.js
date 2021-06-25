@@ -186,6 +186,23 @@ class DynamicPricesReferential {
         });
         return all_prices_conversion_paris;
     }
+
+    /**
+     *
+     * @param {Array} pairs_list
+     * @return {Array}
+     */
+    tryToGetRealPricesForPairs(pairs_list) {
+
+        for (const pair of pairs_list) {
+            console.log("pari", pair);
+        }
+        // const result_euro = await this.binance_repository
+        //     .adaptSymbolAndGetLastestPrice(`${currency}${price_currency}`)
+        //     .catch(() => ({
+        //         price: null,
+        //     }));
+    }
 }
 
 DynamicPricesReferential.instance = null;
