@@ -181,7 +181,10 @@ class DynamicPricesReferential {
         const all_prices_conversion_paris = [];
         Object.keys(mapper).forEach((from) => {
             Object.keys(mapper[from]).forEach((to) => {
-                all_prices_conversion_paris.push(`${from}${to}`);
+                all_prices_conversion_paris.push({
+                    from,
+                    to,
+                });
             });
         });
         return all_prices_conversion_paris;
@@ -202,6 +205,11 @@ class DynamicPricesReferential {
         //     .catch(() => ({
         //         price: null,
         //     }));
+    }
+
+
+    getAllAvailableBinancePairs() {
+        
     }
 }
 
