@@ -43,7 +43,7 @@ describe.only('DynamicPricesReferential', () => {
         dynamic_prices_referential.updatePricesConversionMapping();
     });
 
-    it.only('updatePricesConversionMapping', () => {
+    it('updatePricesConversionMapping', () => {
         const dynamic_prices_referential = DynamicPricesReferential.getInstance();
         dynamic_prices_referential.addPriceCurrency('USDT');
         dynamic_prices_referential.addPriceCurrency('EUR');
@@ -68,6 +68,15 @@ describe.only('DynamicPricesReferential', () => {
         console.log(mapping_structure);
         console.log(pair_list);
         console.log(pair_prices);
+    });
+
+    it.only('getAllAvailableBinancePairs', async () => {
+        const dynamic_prices_referential = DynamicPricesReferential.getInstance();
+        dynamic_prices_referential.injectDependencies(Binance.getInstance());
+        const response = await dynamic_prices_referential
+            .getAllAvailableBinancePairs();
+
+        console.log(response);
     });
 
 });

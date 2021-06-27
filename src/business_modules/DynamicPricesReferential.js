@@ -24,6 +24,7 @@ class DynamicPricesReferential {
         this.currency_list = [];
         this.price_currency_list = [];
 
+        this.all_pairs_prices = null;
         // example
         // {
         //     USDT: {
@@ -208,8 +209,22 @@ class DynamicPricesReferential {
     }
 
 
-    getAllAvailableBinancePairs() {
-        
+    /**
+     * @returns {Array}
+     * @example
+     *    [
+     *        { symbol: 'ENJETH', price: '0.00051773' },
+     *        { symbol: 'STORJBTC', price: '0.00001876' },
+     *        { symbol: 'STORJETH', price: '0.00029910' },
+     *        { symbol: 'BNBUSDT', price: '279.18000000' },
+     *        { symbol: 'VENBNB', price: '0.14920000' },
+     *        ... 1428 more items
+     *    ]
+     */
+    async getAllAvailableBinancePairs() {
+        const response = await this.binance_repository.getLatestPrice();
+        this.all_pairs_prices = response;
+        return this.all_pairs_prices;
     }
 }
 
