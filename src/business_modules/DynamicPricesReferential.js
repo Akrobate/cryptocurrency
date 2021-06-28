@@ -196,16 +196,19 @@ class DynamicPricesReferential {
      * @param {Array} pairs_list
      * @return {Array}
      */
-    tryToGetRealPricesForPairs(pairs_list) {
+    async tryToGetRealPricesForPairs(pairs_list) {
 
+        const prices_pair_list = await this.getAllAvailableBinancePairs();
+
+        const filtered_price = [];
         for (const pair of pairs_list) {
-            console.log("pari", pair);
+            // console.log("pari", pair);
+
+            const price = prices_pair_list.find((item) => item.symbol === `${pair.from}${pair.to}`);
+            filtered_price.push(price);
         }
-        // const result_euro = await this.binance_repository
-        //     .adaptSymbolAndGetLastestPrice(`${currency}${price_currency}`)
-        //     .catch(() => ({
-        //         price: null,
-        //     }));
+        return filtered_price;
+
     }
 
 

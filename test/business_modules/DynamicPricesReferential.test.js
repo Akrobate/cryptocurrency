@@ -43,8 +43,9 @@ describe.only('DynamicPricesReferential', () => {
         dynamic_prices_referential.updatePricesConversionMapping();
     });
 
-    it('updatePricesConversionMapping', () => {
+    it.only('updatePricesConversionMapping', async () => {
         const dynamic_prices_referential = DynamicPricesReferential.getInstance();
+        dynamic_prices_referential.injectDependencies(Binance.getInstance());
         dynamic_prices_referential.addPriceCurrency('USDT');
         dynamic_prices_referential.addPriceCurrency('EUR');
         dynamic_prices_referential.addPriceCurrency('USD');
@@ -62,15 +63,15 @@ describe.only('DynamicPricesReferential', () => {
         const pair_list = dynamic_prices_referential
             .generatePairsFromPirceConversionMappingStructure(mapping_structure);
 
-        const pair_prices = dynamic_prices_referential
+        const pair_prices = await dynamic_prices_referential
             .tryToGetRealPricesForPairs(pair_list);
 
-        console.log(mapping_structure);
-        console.log(pair_list);
+        // console.log(mapping_structure);
+        // console.log(pair_list);
         console.log(pair_prices);
     });
 
-    it.only('getAllAvailableBinancePairs', async () => {
+    it('getAllAvailableBinancePairs', async () => {
         const dynamic_prices_referential = DynamicPricesReferential.getInstance();
         dynamic_prices_referential.injectDependencies(Binance.getInstance());
         const response = await dynamic_prices_referential
