@@ -202,11 +202,17 @@ class DynamicPricesReferential {
 
         const filtered_price = [];
         for (const pair of pairs_list) {
-            // console.log("pari", pair);
-
             const price = prices_pair_list.find((item) => item.symbol === `${pair.from}${pair.to}`);
-            filtered_price.push(price);
+
+            if (price === undefined) {
+                const price_reversed = prices_pair_list.find((item) => item.symbol === `${pair.to}${pair.from}`);
+                filtered_price
+                    .push(price_reversed === undefined ? price_reversed : 1 / price_reversed);
+            } else {
+                filtered_price.push(price);
+            }
         }
+
         return filtered_price;
 
     }
