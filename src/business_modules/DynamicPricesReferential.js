@@ -204,10 +204,20 @@ class DynamicPricesReferential {
         for (const pair of pairs_list) {
             const price = prices_pair_list.find((item) => item.symbol === `${pair.from}${pair.to}`);
 
+            // @Todo can if imbrication can be refactored
             if (price === undefined) {
-                const price_reversed = prices_pair_list.find((item) => item.symbol === `${pair.to}${pair.from}`);
-                filtered_price
-                    .push(price_reversed === undefined ? price_reversed : 1 / price_reversed);
+                const symbol_reversed = `${pair.to}${pair.from}`;
+                const price_reversed = prices_pair_list
+                    .find((item) => item.symbol === symbol_reversed);
+
+                if (price_reversed) {
+                    filtered_price.push({
+                        symbol: symbol_reversed,
+                        price: 1 / price_reversed.price,
+                    });
+                } else {
+                    filtered_price.push(price_reversed);
+                }
             } else {
                 filtered_price.push(price);
             }

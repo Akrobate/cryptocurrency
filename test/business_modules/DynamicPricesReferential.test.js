@@ -67,7 +67,7 @@ describe.only('DynamicPricesReferential', () => {
             .tryToGetRealPricesForPairs(pair_list);
 
         // console.log(mapping_structure);
-        // console.log(pair_list);
+        console.log(pair_list);
         console.log(pair_prices);
     });
 
