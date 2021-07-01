@@ -197,34 +197,26 @@ class DynamicPricesReferential {
      * @return {Array}
      */
     async tryToGetRealPricesForPairs(pairs_list) {
-
         const prices_pair_list = await this.getAllAvailableBinancePairs();
-
         const filtered_price = [];
         for (const pair of pairs_list) {
             const price = prices_pair_list.find((item) => item.symbol === `${pair.from}${pair.to}`);
-
-            // @Todo can if imbrication can be refactored
-            if (price === undefined) {
-                const symbol_reversed = `${pair.to}${pair.from}`;
-                const price_reversed = prices_pair_list
-                    .find((item) => item.symbol === symbol_reversed);
-
-                if (price_reversed) {
-                    filtered_price.push({
-                        symbol: symbol_reversed,
-                        price: 1 / price_reversed.price,
-                    });
-                } else {
-                    filtered_price.push(price_reversed);
-                }
+            const price_reversed = prices_pair_list.find((item) => item.symbol === `${pair.to}${pair.from}`);
+            if (price) {
+                filtered_price.push({
+                    symbol: price.symbol,
+                    price: Number(price.price),
+                });
+            } else if (price_reversed) {
+                filtered_price.push({
+                    symbol: `${pair.from}${pair.to}`,
+                    price: 1 / price_reversed.price,
+                });
             } else {
-                filtered_price.push(price);
+                filtered_price.push(undefined);
             }
         }
-
         return filtered_price;
-
     }
 
 
