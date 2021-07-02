@@ -140,15 +140,8 @@ class DynamicPricesReferential {
     async updatePricesConversionMapping() {
         //
         const mapper = this.preparePricesConversionMappingStructure();
-
-        console.log(mapper);
-        /*
-        const result_euro = await this.binance_repository
-            .adaptSymbolAndGetLastestPrice(`${currency}${price_currency}`)
-            .catch(() => ({
-                price: null,
-            }));
-        */
+        const pairs_list = this.generatePairsFromPirceConversionMappingStructure(mapper);
+        const pairs_prices = await this.tryToGetRealPricesForPairs(pairs_list);
 
 
     }
