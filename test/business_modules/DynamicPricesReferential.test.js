@@ -48,17 +48,14 @@ describe.only('DynamicPricesReferential', () => {
         dynamic_prices_referential.injectDependencies(Binance.getInstance());
         dynamic_prices_referential.addPriceCurrency('USDT');
         dynamic_prices_referential.addPriceCurrency('EUR');
-        dynamic_prices_referential.addPriceCurrency('USD');
 
         const mapping_structure = dynamic_prices_referential
             .preparePricesConversionMappingStructure();
         expect(mapping_structure).to.have.property('USDT');
         expect(mapping_structure).to.have.property('EUR');
-        expect(mapping_structure).to.have.property('USD');
 
         expect(mapping_structure.USDT).not.to.have.property('USDT');
         expect(mapping_structure.USDT).to.have.property('EUR');
-        expect(mapping_structure.USDT).to.have.property('USD');
 
         const pair_list = dynamic_prices_referential
             .generatePairsFromPirceConversionMappingStructure(mapping_structure);
