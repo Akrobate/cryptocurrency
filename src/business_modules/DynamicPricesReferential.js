@@ -230,6 +230,13 @@ class DynamicPricesReferential {
         this.all_pairs_prices = response;
         return this.all_pairs_prices;
     }
+
+    /**
+     * @returns {Object}
+     */
+    generatePricesConverterMapper() {
+        this.prices_conversion_mapper = {};
+    }
 }
 
 DynamicPricesReferential.instance = null;
