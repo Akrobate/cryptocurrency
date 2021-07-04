@@ -148,9 +148,10 @@ class DynamicPricesReferential {
 
 
     /**
+     * @param {Array} pair_prices
      * @return {Object}
      */
-    preparePricesConversionMappingStructure() {
+    preparePricesConversionMappingStructure(pair_prices) {
         const mapper = {};
         this.price_currency_list.forEach((item) => {
             mapper[item] = {};
@@ -158,8 +159,14 @@ class DynamicPricesReferential {
                 .price_currency_list
                 .filter((currency) => currency !== item)
                 .forEach((currency) => {
+                    let price = null;
+                    if (pair_prices) {
+                        const found_price = pair_prices
+                            .find((pair_price_item) => pair_price_item.symbol === `${item}${currency}`);
+                        price = found_price ? found_price.price : null;
+                    }
                     mapper[item][currency] = {
-                        price: null,
+                        price,
                     };
                 });
         });
