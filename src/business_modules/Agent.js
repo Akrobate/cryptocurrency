@@ -107,12 +107,10 @@ class Agent {
                 .catch((error) => console.log(error));
         }
 
-        const balance = cryptocurrencies.reduce((accumulator, currency) => {
+        return cryptocurrencies.reduce((accumulator, currency) => {
             const curency_price = this.wallets[currency].getBalanceEuro();
             return accumulator + curency_price;
         }, 0);
-
-        return balance;
     }
 
 
@@ -164,8 +162,6 @@ class Agent {
             currencies_prices[wallet.getCurrency()] = this
                 .calculateWalletAverageBuyPrices(wallet, operation_list);
         });
-        // console.log(wallets_with_amout);
-        // console.log(this.operations_history);
         return currencies_prices;
     }
 
@@ -182,16 +178,13 @@ class Agent {
         const currency_operation_list = operation_list
             .filter((operation) => operation.getBuyCurrency() === currency);
 
-        // console.log('wallet', currency);
-        // console.log('wallet value', wallet.getBalance());
-        // console.log('pay valyes', pay_uniq_currency_list);
         currency_operation_list.reverse();
 
         const totals = {};
         let current_ballance = wallet.getBalance();
 
         for (const operation of currency_operation_list) {
-            // console.log(current_ballance, currency_operation.getBuyValue());
+
             const pay_currency = operation.getPayCurrency();
             if (totals[pay_currency] === undefined) {
                 totals[pay_currency] = {
@@ -209,7 +202,6 @@ class Agent {
                     / operation.getBuyValue();
                 totals[pay_currency].buy += current_ballance;
                 totals[pay_currency].pay += current_ballance * price;
-                current_ballance -= operation.getBuyValue();
                 break;
             }
         }
